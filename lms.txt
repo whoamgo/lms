@@ -1,0 +1,43 @@
+Course Creation Rules (Admin Panel)
+Step 1: Category Selection
+=============================
+ o.When the admin adds a new course, no category should be selected by default.
+
+ o.The admin must first choose the main course type.
+
+o.Example:
+
+	o.If the course name is “Web Development”, the admin must not select sub-categories such as Laravel, HTML, CSS, or Bootstrap at the time of course creation.
+
+
+Step 2: Course Level
+=====================
+o.When adding a course, the admin should not select the course level.
+
+o.Course levels such as Beginner, Intermediate, and Advanced will be selected by the student, not the admin.
+
+
+Step 3: Pricing Type
+====================
+o.The admin should not choose the pricing type while creating the course.
+
+o.Pricing options include:
+
+	o.Free
+
+	o.Paid
+
+o.If the student selects Paid, they will then be required to enter the amount.
+
+Step 4: Course Expiry Period
+============================
+o.The admin should not select the expiry period when adding the course.
+
+o.Expiry options include:
+
+  o.Lifetime
+
+  o.Limited Time
+
+o.If the student selects Limited Time, they must enter the number of months.
+
