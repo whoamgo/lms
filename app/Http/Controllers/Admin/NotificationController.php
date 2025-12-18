@@ -15,7 +15,7 @@ class NotificationController extends Controller
             ->orWhereNull('user_id')
             ->orderBy('created_at', 'desc')
             ->paginate(20);
-        
+         //echo "<pre>"; print_r($notifications); die();
         return view('admin.notifications.index', compact('notifications'));
     }
 
@@ -27,6 +27,7 @@ class NotificationController extends Controller
             $notification->update(['is_read' => true]);
         }
         
+
         return view('admin.notifications.show', compact('notification'));
     }
 
@@ -54,7 +55,7 @@ class NotificationController extends Controller
                   ->orWhereNull('user_id');
         })->where('is_read', false)->count();
         
-        return response()->json(['count' => $count]);
+        return response()->json(['count' => '500']);
     }
 
     public function getRecent()

@@ -8,6 +8,7 @@
 @endsection
 
 @section('content')
+<br /><br />
     <div class="stats-grid">
         <a href="{{ route('admin.student-enroll.index') }}" class="stat-card" style="text-decoration: none; color: inherit;">
             <div class="icon green">

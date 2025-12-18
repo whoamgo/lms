@@ -19,7 +19,7 @@
 
 @section('content')
 <h2 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 24px;">Active courses & Batch Count</h2>
-
+<br /><br />
 <div class="card">
     <form method="GET" action="{{ route('admin.courses.index') }}" class="search-filter-bar">
         <input type="text" name="search" class="search-input" placeholder="Search students, courses..." value="{{ request('search') }}">

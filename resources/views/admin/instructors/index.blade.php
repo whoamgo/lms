@@ -7,6 +7,7 @@
     <a href="{{ route('admin.dashboard') }}">Home</a> / Trainer Dashboard
 @endsection
 @section('content')
+<br /><br />
 <div class="card">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
         <h2>Instructor Management</h2>

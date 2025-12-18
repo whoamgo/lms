@@ -8,6 +8,7 @@
 @endsection
 
 @section('content')
+<br /><br />
 <div class="card">
     <h2>Instructor Management</h2>
     

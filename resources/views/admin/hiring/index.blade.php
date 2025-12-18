@@ -9,6 +9,7 @@
 
 
 @section('content')
+<br /><br />
 <div class="card">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
         <h2>Hiring Portal</h2>

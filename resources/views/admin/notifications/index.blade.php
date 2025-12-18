@@ -9,6 +9,7 @@
 @endsection
 
 @section('content')
+<br /><br />
 <div class="card">
     <h2>All Notifications</h2>
     
@@ -34,7 +35,9 @@
                     </td>
                     <td>{{ $notification->title }}</td>
                     <td>{{ Str::limit($notification->message, 50) }}</td>
-                    <td>{{ $notification->created_at->format('d M Y, h:i A') }}</td>
+                
+
+                     <td>{{ $notification->created_at ? $notification->created_at->format('d/m/Y') : 'N/A' }}</td>
                     <td>
                         <span class="badge {{ $notification->is_read ? 'badge-success' : 'badge-danger' }}">
                             {{ $notification->is_read ? 'Read' : 'Unread' }}

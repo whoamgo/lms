@@ -8,6 +8,7 @@
 
 
 @section('content')
+<br /><br />
 <div class="card">
     <h2>Admin Profile Management</h2>
     

@@ -16,7 +16,7 @@
     </div>
     
     <div style="margin-bottom: 16px;">
-        <strong>Date:</strong> {{ $notification->created_at->format('d M Y, h:i A') }}
+        <strong>Date:</strong> {{ $notification->created_at ? $notification->created_at->format('d/m/Y') : 'N/A' }}
     </div>
     
     <div style="margin-bottom: 24px;">

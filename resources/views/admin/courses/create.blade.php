@@ -7,6 +7,7 @@
 
 
 @section('content')
+<br /><br />
 <div class="card">
     <h2>Fill in the details to create a new course</h2>
     

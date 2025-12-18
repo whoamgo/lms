@@ -20,6 +20,7 @@
 @endsection
 
 @section('content')
+<br /><br />
 <div class="stats-grid">
     <div class="stat-card">
         <div class="icon green">

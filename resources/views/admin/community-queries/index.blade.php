@@ -6,6 +6,7 @@
     <a href="{{ route('admin.dashboard') }}">Home</a> / All Community Query
 @endsection
 @section('content')
+<br /><br />
 <div class="card">
     <h2>All Community Queries</h2>
     

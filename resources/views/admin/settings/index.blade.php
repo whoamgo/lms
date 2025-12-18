@@ -7,6 +7,7 @@
 @endsection
 
 @section('content')
+<br /><br />
 <div class="card">
     <h2>Website Settings</h2>
     
