@@ -15,7 +15,7 @@
     </div>
     
     <div class="table-container">
-        <table>
+        <table class="data-table" id="instructorsTable">
             <thead>
                 <tr>
                     <th>Name</th>
@@ -27,7 +27,7 @@
                 </tr>
             </thead>
             <tbody>
-                @forelse($instructors as $instructor)
+                @foreach($instructors as $instructor)
                 <tr>
                     <td>{{ $instructor->name }}</td>
                     <td>{{ $instructor->email }}</td>
@@ -47,17 +47,9 @@
                         <a href="{{ route('admin.instructors.edit', $instructor->id) }}" class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.75rem;">Edit</a>
                     </td>
                 </tr>
-                @empty
-                <tr>
-                    <td colspan="6" style="text-align: center; padding: 40px; color: #6b7280;">No instructors found</td>
-                </tr>
-                @endforelse
+                @endforeach
             </tbody>
         </table>
-    </div>
-    
-    <div style="margin-top: 24px;">
-        {{ $instructors->links() }}
     </div>
 </div>
 @endsection

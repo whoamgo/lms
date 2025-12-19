@@ -1,0 +1,40 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class QuizAttempt extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'quiz_id',
+        'student_id',
+        'score',
+        'total_points',
+        'percentage',
+        'answers',
+        'started_at',
+        'completed_at',
+        'status',
+        'time_taken',
+    ];
+
+    protected $casts = [
+        'answers' => 'array',
+        'started_at' => 'datetime',
+        'completed_at' => 'datetime',
+    ];
+
+    public function quiz()
+    {
+        return $this->belongsTo(Quiz::class);
+    }
+
+    public function student()
+    {
+        return $this->belongsTo(User::class, 'student_id');
+    }
+}

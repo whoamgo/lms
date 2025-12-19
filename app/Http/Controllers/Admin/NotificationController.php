@@ -14,8 +14,7 @@ class NotificationController extends Controller
         $notifications = AdminNotification::where('user_id', Auth::id())
             ->orWhereNull('user_id')
             ->orderBy('created_at', 'desc')
-            ->paginate(20);
-         //echo "<pre>"; print_r($notifications); die();
+            ->get();
         return view('admin.notifications.index', compact('notifications'));
     }
 

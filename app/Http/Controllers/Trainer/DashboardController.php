@@ -16,24 +16,26 @@ class DashboardController extends Controller
     {
         $trainer = Auth::user();
         
-        // Get assigned courses count
-        $assignedCourses = DB::table('course_trainer')
-            ->where('trainer_id', $trainer->id)
-            ->count();
+        $assignedCourses = $trainer->assignedCourses()->count();
         
-        // Get active batches count - simplified for now
-        $activeBatches = Batch::where('status', 'active')->count();
+        $activeBatches = Batch::whereHas('course', function($q) use ($trainer) {
+            $q->whereHas('trainers', function($query) use ($trainer) {
+                $query->where('users.id', $trainer->id);
+            });
+        })->where('status', 'active')->count();
         
-        // Get upcoming classes count
         $upcomingClasses = LiveClass::where('trainer_id', $trainer->id)
             ->where('status', 'scheduled')
             ->where('scheduled_at', '>', now())
             ->count();
         
+        $uploadedVideos = \App\Models\Video::where('trainer_id', $trainer->id)->count();
+        
         return view('trainer.dashboard', compact(
             'assignedCourses',
             'activeBatches',
-            'upcomingClasses'
+            'upcomingClasses',
+            'uploadedVideos'
         ));
     }
 }

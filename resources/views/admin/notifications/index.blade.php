@@ -26,7 +26,7 @@
                 </tr>
             </thead>
             <tbody>
-                @forelse($notifications as $notification)
+                @foreach($notifications as $notification)
                 <tr class="{{ $notification->is_read ? '' : 'unread' }}">
                     <td>
                         <span class="badge badge-{{ $notification->type === 'error' ? 'danger' : ($notification->type === 'success' ? 'success' : 'info') }}">
@@ -47,17 +47,9 @@
                         <a href="{{ route('admin.notifications.show', $notification->id) }}" class="btn btn-primary" style="padding: 6px 12px; font-size: 0.75rem;">View</a>
                     </td>
                 </tr>
-                @empty
-                <tr>
-                    <td colspan="6" style="text-align: center; padding: 40px; color: #6b7280;">No notifications found</td>
-                </tr>
-                @endforelse
+                @endforeach
             </tbody>
         </table>
-    </div>
-    
-    <div style="margin-top: 24px;">
-        {{ $notifications->links() }}
     </div>
 </div>
 @endsection

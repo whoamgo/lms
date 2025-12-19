@@ -12,7 +12,7 @@ class InstructorController extends Controller
 {
     public function index()
     {
-        $instructors = User::where('role', 'trainer')->with('assignedCourses')->paginate(15);
+        $instructors = User::where('role', 'trainer')->with('assignedCourses')->get();
         return view('admin.instructors.index', compact('instructors'));
     }
 

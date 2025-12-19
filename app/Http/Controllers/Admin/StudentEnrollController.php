@@ -11,17 +11,7 @@ class StudentEnrollController extends Controller
 {
     public function index(Request $request)
     {
-        $query = User::where('role', 'student')->withCount(['enrollments', 'completedEnrollments']);
-        
-        if ($request->has('search')) {
-            $search = $request->search;
-            $query->where(function($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('email', 'like', "%{$search}%");
-            });
-        }
-        
-        $students = $query->paginate(15);
+        $students = User::where('role', 'student')->withCount(['enrollments', 'completedEnrollments'])->get();
         
         $totalStudents = User::where('role', 'student')->count();
         $activeStudents = User::where('role', 'student')->where('status', 'active')->count();

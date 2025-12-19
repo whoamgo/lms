@@ -62,15 +62,8 @@
 <div class="card">
     <h2>Student Enrollment Management</h2>
     
-    <form method="GET" action="{{ route('admin.student-enroll.index') }}" class="search-filter-bar">
-        <input type="text" name="search" class="search-input" placeholder="Search students, courses..." value="{{ request('search') }}">
-        <button type="button" class="btn btn-secondary">Filter</button>
-        <button type="button" class="btn btn-secondary">Export</button>
-        <input type="date" class="btn btn-warning" style="padding: 12px 16px;">
-    </form>
-    
     <div class="table-container">
-        <table class="data-table">
+        <table class="data-table" id="studentsTable">
             <thead>
                 <tr>
                     <th><input type="checkbox"></th>
@@ -84,7 +77,7 @@
                 </tr>
             </thead>
             <tbody>
-                @forelse($students as $student)
+                @foreach($students as $student)
                 <tr>
                     <td><input type="checkbox"></td>
                     <td>
@@ -119,17 +112,9 @@
                     <td>{{ $student->created_at->format('d M Y') }}</td>
                     <td>{{ $student->address ?? 'N/A' }}</td>
                 </tr>
-                @empty
-                <tr>
-                    <td colspan="8" style="text-align: center; padding: 40px; color: #6b7280;">No students found</td>
-                </tr>
-                @endforelse
+                @endforeach
             </tbody>
         </table>
-    </div>
-    
-    <div style="margin-top: 24px;">
-        {{ $students->links() }}
     </div>
 </div>
 @endsection

@@ -2,6 +2,10 @@
 
 A comprehensive Learning Management System built with Laravel 11 and MySQL, featuring role-based access for Admin, Trainer (Instructor), and Student.
 
+## 📚 Complete Documentation
+
+For detailed feature documentation, see [FEATURES.md](./FEATURES.md)
+
 ## Features
 
 ### Admin Module
@@ -11,23 +15,29 @@ A comprehensive Learning Management System built with Laravel 11 and MySQL, feat
 - Community Query management
 - Trainer Dashboard view
 - Hiring Portal
+- Notifications system
 
 ### Trainer Module
 - Dashboard with assigned courses
 - My Profile management
-- Assigned Courses view
-- Active Batch management
+- Assigned Courses view (default 3, "Show More" button)
+- Active Batch management (default 3, "Show More" button, Create/Edit functionality)
 - Upcoming Live Classes
 - Uploaded Videos management
-- Notifications
+- Quiz System (Create, View, Reports)
+- Satsang Management
+- Notifications (Header dropdown + Sidebar)
+- Standalone video player page
 
 ### Student Module
-- Dashboard with enrolled courses
-- My Profile management
-- Enroll Courses
-- My Certificate downloads
-- Attendance Record
-- Recorded Course videos
+- Dashboard with enrolled courses, statistics, continue learning, upcoming courses
+- My Profile management (Account Management, Profile Information, Contact Info, About)
+- Enroll Courses (Tabs: All/Active/Completed, default 3, "Show More" button)
+- My Certificate (PDF generation, Download, Share on LinkedIn, Tabs: Current/Past/Upcoming)
+- Attendance Record (Calendar view, Charts, Filters, Year/Month select, Date range)
+- Recorded Course videos (Course modal, Video list, Progress tracking)
+- Notifications (Header dropdown + Sidebar + Notifications page)
+- Standalone video player page
 
 ## Installation
 
@@ -119,7 +129,44 @@ The system includes the following main tables:
 - **Backend:** Laravel 11
 - **Database:** MySQL
 - **Frontend:** HTML, CSS, JavaScript
-- **Styling:** Custom CSS with modern design (ChatGPT-inspired theme)
+- **Styling:** 
+  - Bootstrap 5.3.0
+  - Custom CSS files (admin.css, trainer.css, student.css)
+  - No inline CSS (all styles externalized)
+- **Libraries:**
+  - jQuery 3.7.1
+  - Chart.js 4.4.0
+  - DataTables.js 1.13.7
+  - DomPDF 3.1 (for certificate PDF generation)
+
+## Code Quality & Architecture
+
+### CSS Organization
+- **Modular CSS:** All styles in dedicated files (admin.css, trainer.css, student.css)
+- **Section-wise Organization:** CSS organized by components
+- **No Inline CSS:** All inline styles removed and moved to CSS files
+- **Mobile Responsive:** All pages optimized for mobile, tablet, and desktop
+
+### Error Handling & Logging
+- **Centralized Logging:** `LogHelper` class for structured logging
+- **Module-based Logs:** Separate log files per module (student, trainer, admin)
+- **Try-Catch Blocks:** All controllers have proper error handling
+- **User-friendly Errors:** Graceful error messages for users
+
+### Security
+- **Encrypted URLs:** All sensitive IDs encrypted using `EncryptionHelper`
+- **Role-based Access:** Middleware protection for all routes
+- **CSRF Protection:** All forms protected
+- **Password Hashing:** Secure password storage
+
+### Performance
+- **Caching:** Dashboard statistics and frequently accessed data cached
+- **Database Optimization:** Eager loading, indexed columns
+- **Query Optimization:** Efficient database queries
+
+## Error Pages
+
+- **404 Page:** Custom 404 error page with navigation options
 
 ## Role-Based Access Control
 

@@ -17,7 +17,7 @@
     </div>
     
     <div class="table-container">
-        <table>
+        <table class="data-table" id="hiringTable">
             <thead>
                 <tr>
                     <th>Job Title</th>
@@ -28,7 +28,7 @@
                 </tr>
             </thead>
             <tbody>
-                @forelse($jobs as $job)
+                @foreach($jobs as $job)
                 <tr>
                     <td>{{ $job->job_title }}</td>
                     <td>{{ $job->category }}</td>
@@ -42,11 +42,7 @@
                         </form>
                     </td>
                 </tr>
-                @empty
-                <tr>
-                    <td colspan="5" style="text-align: center; padding: 40px; color: #6b7280;">No jobs posted</td>
-                </tr>
-                @endforelse
+                @endforeach
             </tbody>
         </table>
     </div>

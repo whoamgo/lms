@@ -72,24 +72,75 @@ document.addEventListener('DOMContentLoaded', function() {
     setInterval(updateNotificationBadge, 30000);
     updateNotificationBadge();
     
-    // Initialize DataTables if present
+    // Initialize DataTables if present (only for tables that don't have a specific handler)
     if (typeof $ !== 'undefined' && $.fn.DataTable) {
-        $('.data-table').DataTable({
-            pageLength: 25,
-            responsive: true,
-            order: [[0, 'desc']],
-            language: {
-                search: "Search:",
-                lengthMenu: "Show _MENU_ entries",
-                info: "Showing _START_ to _END_ of _TOTAL_ entries",
-                infoEmpty: "No entries to show",
-                paginate: {
-                    first: "First",
-                    last: "Last",
-                    next: "Next",
-                    previous: "Previous"
-                }
+        $('.data-table').each(function() {
+            const table = $(this);
+            const tableId = table.attr('id');
+            
+            // Skip tables with specific handlers
+            const skipTables = ['videosTable', 'quizzesTable', 'satsangsTable', 'liveClassesTable', 'questionStatsTable', 'attemptsTable'];
+            if (tableId && skipTables.includes(tableId)) {
+                return; // Skip this table, it will be initialized by its specific handler
             }
+            
+            // Check if already initialized
+            if ($.fn.DataTable.isDataTable(table)) {
+                return;
+            }
+            
+            const hasActions = table.find('th:contains("Actions")').length > 0;
+            const lastSortableIndex = table.find('thead th').length - (hasActions ? 2 : 1); // Exclude Actions and checkbox columns from sorting
+            
+            table.DataTable({
+                pageLength: 25,
+                lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+                responsive: true,
+                order: [[lastSortableIndex >= 0 ? lastSortableIndex : 0, 'desc']],
+                dom: '<"table-header-wrapper"<"table-header-left"l><"table-header-right"f>>rt<"table-footer-wrapper"<"table-footer-left"i><"table-footer-right"p>>',
+                language: {
+                    search: "",
+                    searchPlaceholder: "Search...",
+                    lengthMenu: "Show _MENU_ entries",
+                    info: "Showing _START_ to _END_ of _TOTAL_ entries",
+                    infoEmpty: "No entries to show",
+                    infoFiltered: "(filtered from _MAX_ total entries)",
+                    zeroRecords: "No matching records found",
+                    emptyTable: "No data available in table",
+                    paginate: {
+                        first: "First",
+                        last: "Last",
+                        next: "Next",
+                        previous: "Previous"
+                    }
+                },
+                columnDefs: [
+                    {
+                        targets: [0], // Checkbox column
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        targets: -1, // Actions column (last column)
+                        orderable: false,
+                        searchable: false
+                    }
+                ],
+                initComplete: function() {
+                    // Add custom styling after initialization
+                    this.api().columns().every(function() {
+                        const column = this;
+                        const header = $(column.header());
+                        if (header.text().trim() !== '' && !header.find('input, select').length) {
+                            // Add sort icons
+                            header.append('<span class="sort-icon"></span>');
+                        }
+                    });
+                },
+                drawCallback: function() {
+                    // Reinitialize tooltips or other interactive elements if needed
+                }
+            });
         });
     }
     

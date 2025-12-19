@@ -11,13 +11,7 @@ class CommunityQueryController extends Controller
 {
     public function index(Request $request)
     {
-        $query = CommunityQuery::with(['student', 'assignedTrainer', 'course']);
-        
-        if ($request->has('status')) {
-            $query->where('status', $request->status);
-        }
-        
-        $queries = $query->orderBy('created_at', 'desc')->paginate(15);
+        $queries = CommunityQuery::with(['student', 'assignedTrainer', 'course'])->orderBy('created_at', 'desc')->get();
         $trainers = User::where('role', 'trainer')->get();
         
         return view('admin.community-queries.index', compact('queries', 'trainers'));

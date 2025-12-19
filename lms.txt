@@ -1,3 +1,19 @@
+php artisan migrate --path=database/migrations/2025_12_18_054755_create_notifications_table.php
+
+
+php artisan migrate --path=database/migrations/2025_12_18_162614_add_thumbnail_and_duration_to_live_classes_table.php
+
+
+php artisan migrate --path=database/migrations/2025_12_18_164130_add_batch_id_and_status_to_videos_table.php
+
+
+
+php artisan migrate --path=database/migrations/2025_12_18_164704_add_description_and_thumbnail_to_batches_table.php
+
+
+php artisan migrate --path=database/migrations/2025_12_18_164704_add_description_and_thumbnail_to_batches_table.php
+
+
 Course Creation Rules (Admin Panel)
 Step 1: Category Selection
 =============================

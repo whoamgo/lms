@@ -11,7 +11,7 @@
     <h2>All Community Queries</h2>
     
     <div class="table-container">
-        <table>
+        <table class="data-table" id="queriesTable">
             <thead>
                 <tr>
                     <th>Student</th>
@@ -24,7 +24,7 @@
                 </tr>
             </thead>
             <tbody>
-                @forelse($queries as $query)
+                @foreach($queries as $query)
                 <tr>
                     <td>{{ $query->student->name ?? 'N/A' }}</td>
                     <td>{{ $query->subject }}</td>
@@ -59,17 +59,9 @@
                         </div>
                     </td>
                 </tr>
-                @empty
-                <tr>
-                    <td colspan="7" style="text-align: center; padding: 40px; color: #6b7280;">No queries found</td>
-                </tr>
-                @endforelse
+                @endforeach
             </tbody>
         </table>
-    </div>
-    
-    <div style="margin-top: 24px;">
-        {{ $queries->links() }}
     </div>
 </div>
 

@@ -11,14 +11,7 @@ class CourseController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Course::with('batches');
-        
-        if ($request->has('search')) {
-            $search = $request->search;
-            $query->where('title', 'like', "%{$search}%");
-        }
-        
-        $courses = $query->paginate(15);
+        $courses = Course::with('batches', 'enrollments')->get();
         
         return view('admin.courses.index', compact('courses'));
     }

@@ -18,21 +18,14 @@
 @endsection
 
 @section('content')
-<h2 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 24px;">Active courses & Batch Count</h2>
-<br /><br />
 <div class="card">
-    <form method="GET" action="{{ route('admin.courses.index') }}" class="search-filter-bar">
-        <input type="text" name="search" class="search-input" placeholder="Search students, courses..." value="{{ request('search') }}">
-        <button type="button" class="btn btn-primary">Filter</button>
-        <input type="date" class="btn btn-warning" style="padding: 12px 16px;">
-    </form>
-    
-    <div style="margin-bottom: 16px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+        <h2 style="margin: 0;">Active Courses & Batch Count</h2>
         <a href="{{ route('admin.courses.create') }}" class="btn btn-primary">Create New Course</a>
     </div>
     
     <div class="table-container">
-        <table class="data-table">
+        <table class="data-table" id="coursesTable">
             <thead>
                 <tr>
                     <th><input type="checkbox"></th>
@@ -45,7 +38,7 @@
                 </tr>
             </thead>
             <tbody>
-                @forelse($courses as $course)
+                @foreach($courses as $course)
                 <tr>
                     <td><input type="checkbox"></td>
                     <td>
@@ -80,17 +73,9 @@
                     <td>{{ $course->start_date ? $course->start_date->format('d M Y') : 'N/A' }}</td>
                     <td>{{ $course->end_date ? $course->end_date->format('d M Y') : 'N/A' }}</td>
                 </tr>
-                @empty
-                <tr>
-                    <td colspan="7" style="text-align: center; padding: 40px; color: #6b7280;">No courses found</td>
-                </tr>
-                @endforelse
+                @endforeach
             </tbody>
         </table>
-    </div>
-    
-    <div style="margin-top: 24px;">
-        {{ $courses->links() }}
     </div>
 </div>
 @endsection

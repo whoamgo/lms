@@ -12,11 +12,13 @@ class Batch extends Model
     protected $fillable = [
         'course_id',
         'name',
+        'description',
         'start_date',
         'end_date',
         'class_time',
         'max_students',
         'status',
+        'thumbnail',
     ];
 
     protected $casts = [

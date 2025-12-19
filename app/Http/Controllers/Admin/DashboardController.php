@@ -19,12 +19,19 @@ class DashboardController extends Controller
         $totalTrainers = User::where('role', 'trainer')->count();
         $pendingQueries = CommunityQuery::where('status', 'open')->count();
         
+        // Get recently created courses (last 5)
+        $recentCourses = Course::with('trainers')
+            ->orderBy('created_at', 'desc')
+            ->limit(5)
+            ->get();
+        
         return view('admin.dashboard', compact(
             'totalStudents',
             'activeCourses',
             'totalEnrollments',
             'totalTrainers',
-            'pendingQueries'
+            'pendingQueries',
+            'recentCourses'
         ));
     }
 }

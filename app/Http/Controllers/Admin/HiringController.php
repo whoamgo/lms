@@ -10,7 +10,7 @@ class HiringController extends Controller
 {
     public function index()
     {
-        $jobs = DB::table('jobs')->orderBy('created_at', 'desc')->paginate(15);
+        $jobs = DB::table('jobs')->orderBy('created_at', 'desc')->get();
         return view('admin.hiring.index', compact('jobs'));
     }
 
