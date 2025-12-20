@@ -3,7 +3,7 @@
 @section('title', 'Upload New Video')
 
 @section('breadcrumbs')
-    <a href="{{ route('trainer.dashboard') }}">Home</a> / <a href="{{ route('trainer.videos') }}">Uploaded videos</a> / Upload New Video
+    <a href="{{ route('trainer.dashboard') }}">Home</a> / <a href="{{ route('trainer.videos') }}">Uploaded videos</a> / Upload New Video  
 @endsection
 
 @section('content')

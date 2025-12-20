@@ -1,0 +1,77 @@
+Admin Module
+================
+
+1.Student Enrollment Management in added a Action coloums here view all info and delete button also added,when delete button cliked thant open modal to confirm.
+
+2.Student Enrollment Management show all enrollment list which studen are enrolled in cource,details,and quzie reports,alos showing more info in your ideas
+
+3.Instructor Management in admin sectionn showing all cource which are assing to instructor,instructor all informations showing view on modal,delete button also added,when delete button cliked thant open modal to confirm.
+
+4.Active Courses & Batch Count view all info about courses like trainer,total studnet join,more informations about course all any info view on a page ,create proper desgine userfindlily,delete button also added,when delete button cliked thant open modal to confirm.
+
+5.Instructor Management in added a Action coloums here view all info and delete button also added,when delete button cliked thant open modal to confirm.show all info about tnstructor liked how many courses assing,
+
+6.Hiring Portal in added a Action coloums here view all info and,when delete button cliked thant open modal to confirm.,trak jos how many apply for this jobs view all info.
+
+
+
+Trainer Module
+==============
+
+1.Active batch when create batch than start and end date select options added,close time and max student join added this fileds,Active batch in added a Action coloums here view all info and delete button also added,when delete button cliked thant open modal to confirm.
+ 
+
+
+
+
+
+ Notifications
+ ==============
+ A.Student Notifications
+ 	1.course enrolled notifications
+
+ B.Trainer Notifications
+ 	1.New enrollment notifications
+ 	2.Community query notifications
+ 	3.Session reminder notifications
+	1.course enrolled notifications
+
+ C.Admin Notifications
+ 	1.New user registered
+ 	2.Course created notifications
+ 	3.Create Batch by trainer notifications
+ 	4.Uploaded new videos by trainer notifications
+ 	5.community query when come than notifications
+
+
+
+
+
+
+Simple NOfificatoins message liked that
+
+
+A. Student Notifications
+■ Course Enrolled
+Welcome aboard! You’ve been successfully enrolled in {Course Name}. Start learning today and take the next
+step toward your goals.
+B. Trainer Notifications
+■ New Enrollment
+{Student Name} has enrolled in your course {Course Name}.
+■ Community Query
+A student has posted a new question in {Course Name}. Please review and respond.
+■ Session Reminder
+Your live session {Session Title} will start in 15 minutes. Get ready to go live.
+■ Course Enrolled (Trainer View)
+Students have started enrolling in your course {Course Name}.
+C. Admin Notifications
+■ New User Registered
+{User Name} has successfully registered on the LMS.
+■ Course Created
+Trainer {Trainer Name} has created a new course {Course Name}.
+■■ Batch Created
+Trainer {Trainer Name} has created a new batch for {Course Name}.
+■ New Video Uploaded
+Trainer {Trainer Name} uploaded a new video in {Course Name}.
+■■ Community Query Alert
+A new community query has been posted. Please review and take action.

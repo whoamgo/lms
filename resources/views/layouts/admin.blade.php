@@ -81,7 +81,8 @@
             color: var(--text-primary, #1a1a1a);
         }
         .sidebar-menu li a.active {
-            background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%);
+            /*background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%);*/
+            background: linear-gradient(to right, #ff6600, #fb3233);
             color: white;
         }
         .sidebar-menu li a svg {

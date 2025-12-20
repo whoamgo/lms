@@ -72,7 +72,7 @@
             width: 100%;
             background: #000;
             border-radius: 12px;
-            overflow: hidden;
+            /*overflow: hidden;*/
             margin-bottom: 24px;
             position: relative;
         }

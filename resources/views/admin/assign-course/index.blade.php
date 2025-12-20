@@ -7,6 +7,7 @@
 @endsection
 
 @section('content')
+<br><br>
 <div class="card">
     <h2 style="margin-bottom: 24px; font-size: 1.25rem; font-weight: 600;">Recently Created Courses</h2>
     @if($courses->count() > 0)

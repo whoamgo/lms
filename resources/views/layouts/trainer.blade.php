@@ -56,26 +56,11 @@
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
                 SkillSpace
             </a></li>
+
+
         </ul>
-        
-        <!-- Notifications Section in Sidebar -->
-        <div class="sidebar-notifications">
-            <div class="sidebar-notifications-header">
-                <span class="sidebar-notifications-title">Notifications</span>
-                <span class="notification-badge" id="sidebarNotificationCount">0</span>
-            </div>
-            <div id="sidebarNotificationsList">
-                <!-- Notifications will be loaded here via AJAX -->
-            </div>
-            <a href="{{ route('trainer.notifications.index') }}" class="btn btn-sm btn-primary" style="width: 100%; margin-top: 12px; text-align: center;">View All</a>
-        </div>
-        
-        <a href="{{ route('trainer.skillspace') }}" class="skillspace-btn">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 20px; height: 20px;">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-            </svg>
-            SkillSpace
-        </a>
+ 
+       
     </div>
     
     <div class="main-content">
@@ -147,14 +132,22 @@
         @endif
     </div>
     
-    @if(session('success'))
-    <div class="alert alert-success notification-alert">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 20px; height: 20px;">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+    @if (session('success'))
+    <div class="alert alert-success notification-alert d-flex align-items-center gap-2 shadow-sm rounded px-3 py-2"
+         role="alert">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor"
+             viewBox="0 0 24 24" width="20" height="20" class="flex-shrink-0">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
         </svg>
-        {{ session('success') }}
+
+        <span class="flex-grow-1">
+            {{ session('success') }}
+        </span>
     </div>
-    @endif
+@endif
+
 
     @if(session('error'))
     <div class="alert alert-error notification-alert">

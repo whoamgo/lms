@@ -695,7 +695,8 @@ body {
 .footer-copyright {
     text-align: center;
     padding: 16px;
-    color: #6b7280;
+    color: #ffffff;
+    background: black;
     font-size: 0.875rem;
 }
 

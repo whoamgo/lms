@@ -13,6 +13,10 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
+Route::get('/login', function () {
+  return view('welcome');
+})->name('login');
+
 // Admin Routes
 Route::prefix('admin')->group(function () {
     Route::get('/login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login');
