@@ -479,3 +479,4 @@ function shareOnLinkedIn(certificateUrl, courseTitle) {
 }
 </script>
 @endpush
+

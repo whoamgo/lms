@@ -162,3 +162,4 @@
 <script src="{{ asset('js/trainer-satsang.js') }}"></script>
 @endpush
 @endsection
+

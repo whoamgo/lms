@@ -32,29 +32,49 @@
                     @if($videoId)
                         <iframe 
                             id="videoPlayer"
-                            src="https://www.youtube.com/embed/{{ $videoId }}?autoplay=1" 
+                            src="https://www.youtube.com/embed/{{ $videoId }}?autoplay=1&modestbranding=1&rel=0" 
                             frameborder="0" 
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                            allowfullscreen>
+                            allowfullscreen
+                            style="pointer-events: auto;"
+                            oncontextmenu="return false;">
                         </iframe>
                     @else
-                        <div style="padding: 60px; text-align: center; background: #000;">
-                            <a href="{{ $video->video_url }}" target="_blank" class="action-btn" style="display: inline-flex; text-decoration: none;">Watch Video</a>
+                        <div style="padding: 60px; text-align: center; background: #1a1a1a; border-radius: 8px;">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 64px; height: 64px; margin: 0 auto 16px; color: #6b7280;">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                            </svg>
+                            <p style="color: #9ca3af; font-size: 1rem; margin: 0 0 16px 0;">Unable to load video from this URL</p>
+                            <a href="{{ $video->video_url }}" target="_blank" rel="noopener noreferrer" class="action-btn" style="display: inline-flex; text-decoration: none;">Watch on External Link</a>
                         </div>
                     @endif
                 @elseif(str_contains($video->video_url, 'uploads/videos') || str_contains($video->video_url, 'storage'))
-                    <video id="videoPlayer" controls style="width: 100%; height: auto; min-height: 500px;">
+                    <video 
+                        id="videoPlayer" 
+                        controls 
+                        controlsList="nodownload noplaybackrate" 
+                        disablePictureInPicture
+                        style="width: 100%; height: auto; min-height: 500px;"
+                        oncontextmenu="return false;"
+                        onkeydown="if(event.keyCode==123 || (event.ctrlKey && event.shiftKey && (event.keyCode==73 || event.keyCode==74 || event.keyCode==67))) return false;">
                         <source src="{{ asset($video->video_url) }}" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
                 @else
-                    <div style="padding: 60px; text-align: center; background: #000;">
-                        <a href="{{ $video->video_url }}" target="_blank" class="action-btn" style="display: inline-flex; text-decoration: none;">Watch Video</a>
+                    <div style="padding: 60px; text-align: center; background: #1a1a1a; border-radius: 8px;">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 64px; height: 64px; margin: 0 auto 16px; color: #6b7280;">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                        </svg>
+                        <p style="color: #9ca3af; font-size: 1rem; margin: 0 0 16px 0;">Unable to load video from this URL</p>
+                        <a href="{{ $video->video_url }}" target="_blank" rel="noopener noreferrer" class="action-btn" style="display: inline-flex; text-decoration: none;">Watch on External Link</a>
                     </div>
                 @endif
             @else
-                <div style="padding: 60px; text-align: center; background: #000; color: #fff;">
-                    <p>Video URL not available</p>
+                <div style="padding: 60px; text-align: center; background: #1a1a1a; color: #fff; border-radius: 8px;">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 64px; height: 64px; margin: 0 auto 16px; color: #6b7280;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                    </svg>
+                    <p style="color: #9ca3af; font-size: 1rem; margin: 0;">Video content will be available soon</p>
                 </div>
             @endif
         </div>
@@ -77,11 +97,11 @@
 
             <!-- Action Buttons -->
             <div class="video-actions">
-                <button class="action-btn" onclick="saveVideo()">
+                <button class="action-btn {{ $isSaved ? 'saved' : '' }}" id="saveVideoBtn" onclick="saveVideo()">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 18px; height: 18px;">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
                     </svg>
-                    Save
+                    <span id="saveVideoText">{{ $isSaved ? 'Saved' : 'Save' }}</span>
                 </button>
                 <button class="action-btn" onclick="shareVideo()">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 18px; height: 18px;">
@@ -89,17 +109,10 @@
                     </svg>
                     Share
                 </button>
-                <button class="action-btn" onclick="downloadVideo()">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 18px; height: 18px;">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
-                    </svg>
-                    Download
-                </button>
             </div>
 
             <!-- Video Description -->
             <div class="video-description">
-                <div class="description-title">Title - {{ $video->title }}</div>
                 
                 <div class="learning-objectives">
                     <h4>
@@ -268,8 +281,42 @@
 @push('scripts')
 <script>
 function saveVideo() {
-    // Implement save functionality
-    alert('Video saved to your list!');
+    const btn = document.getElementById('saveVideoBtn');
+    const text = document.getElementById('saveVideoText');
+    const isCurrentlySaved = btn.classList.contains('saved');
+    
+    // Disable button during request
+    btn.disabled = true;
+    
+    fetch('{{ route("student.videos.toggle-save", \App\Helpers\EncryptionHelper::encryptIdForUrl($video->id)) }}', {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            'X-Requested-With': 'XMLHttpRequest',
+            'Accept': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            if (data.saved) {
+                btn.classList.add('saved');
+                text.textContent = 'Saved';
+            } else {
+                btn.classList.remove('saved');
+                text.textContent = 'Save';
+            }
+        } else {
+            alert(data.message || 'An error occurred');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while saving the video');
+    })
+    .finally(() => {
+        btn.disabled = false;
+    });
 }
 
 function shareVideo() {
@@ -278,38 +325,70 @@ function shareVideo() {
             title: '{{ $video->title }}',
             text: 'Check out this video: {{ $video->title }}',
             url: window.location.href
+        }).catch(err => {
+            // User cancelled or error occurred
+            console.log('Share cancelled or error:', err);
         });
     } else {
         // Fallback: copy to clipboard
-        navigator.clipboard.writeText(window.location.href);
-        alert('Link copied to clipboard!');
+        navigator.clipboard.writeText(window.location.href).then(() => {
+            alert('Link copied to clipboard!');
+        }).catch(err => {
+            console.error('Failed to copy:', err);
+            alert('Failed to copy link. Please copy manually: ' + window.location.href);
+        });
     }
 }
 
-function downloadVideo() {
-    // Implement download functionality
-    alert('Download feature coming soon!');
-}
-
-// Mark video as completed when video ends
+// Disable right-click and developer tools shortcuts
 document.addEventListener('DOMContentLoaded', function() {
+    // Disable right-click context menu
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+        return false;
+    });
+    
+    // Disable common developer tools shortcuts
+    document.addEventListener('keydown', function(e) {
+        // Disable F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
+        if (e.keyCode === 123 || 
+            (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode == 74)) ||
+            (e.ctrlKey && e.keyCode === 85)) {
+            e.preventDefault();
+            return false;
+        }
+    });
+    
+    // Disable text selection on video player
+    const videoWrapper = document.querySelector('.video-wrapper');
+    if (videoWrapper) {
+        videoWrapper.style.userSelect = 'none';
+        videoWrapper.style.webkitUserSelect = 'none';
+    }
+    
+    // Mark video as completed when video ends
     const videoPlayer = document.getElementById('videoPlayer');
     
     if (videoPlayer && videoPlayer.tagName === 'VIDEO') {
         videoPlayer.addEventListener('ended', function() {
             // Mark video as completed via AJAX
-            $.ajax({
-                url: '{{ route("student.videos.mark-completed", \App\Helpers\EncryptionHelper::encryptIdForUrl($video->id)) }}',
-                type: 'POST',
+            fetch('{{ route("student.videos.mark-completed", \App\Helpers\EncryptionHelper::encryptIdForUrl($video->id)) }}', {
+                method: 'POST',
                 headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                success: function(response) {
-                    if (response.success) {
-                        // Reload page to update status
-                        location.reload();
-                    }
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json'
                 }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Reload page to update status
+                    setTimeout(() => location.reload(), 1000);
+                }
+            })
+            .catch(error => {
+                console.error('Error marking video as completed:', error);
             });
         });
     }
@@ -319,3 +398,4 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 @endpush
+

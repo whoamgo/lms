@@ -350,3 +350,4 @@ class TrainerModuleController extends Controller
         return redirect()->route('admin.trainer-module.videos')->with('success', 'Video uploaded successfully!');
     }
 }
+

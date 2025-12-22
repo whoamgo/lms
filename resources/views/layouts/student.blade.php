@@ -46,7 +46,7 @@
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                 My Certificate
             </a></li>
-            <li><a href="{{ route('student.attendance') }}" class="{{ request()->routeIs('student.attendance*') ? 'active' : '' }}">
+            <li style="display: none;"><a href="{{ route('student.attendance') }}" class="{{ request()->routeIs('student.attendance*') ? 'active' : '' }}">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                 Attendance record
             </a></li>
@@ -58,23 +58,32 @@
         
         <div class="sidebar-separator"></div>
         <div class="sidebar-section-title">Account</div>
-        <hr>
         <ul class="sidebar-menu">
             <li><a href="{{ route('student.logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
                 Logout
             </a></li>
-            <li><a href="javascript::void(0)">
+            <li style="display:none;"><a href="{{ route('student.support') }}">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                 Support
             </a></li>
         </ul>
         
-         
+        <!-- Notifications Section in Sidebar -->
+        <!-- <div class="sidebar-notifications">
+            <div class="sidebar-notifications-header">
+                <span class="sidebar-notifications-title">Notifications</span>
+                <span class="notification-badge" id="sidebarNotificationCount">0</span>
+            </div>
+            <div id="sidebarNotificationsList">
+             </div>
+            <a href="{{ route('student.notifications.index') }}" class="btn btn-sm btn-primary sidebar-view-all-btn">View All</a>
+        </div>
+        
         <form id="logout-form" action="{{ route('student.logout') }}" method="POST" class="hidden-form">
             @csrf
-        </form>
-    </div>
+        </form>-->
+    </div> 
     
     <div class="main-content">
         <div class="header">
@@ -161,6 +170,12 @@
     <script src="{{ asset('js/admin.js') }}"></script>
     <script src="{{ asset('js/student.js') }}"></script>
     <script>
+
+    const NotificationsUnreadCount = '{{ route("student.notifications.unread-count") }}';
+    const NotificationsRecent = '{{ route("student.notifications.recent") }}';
+    
+    const NotificationsMarkAllRead = '{{ route("student.notifications.mark-all-read") }}';
+
         // Auto-hide alerts
         setTimeout(() => {
             document.querySelectorAll('.notification-alert').forEach(alert => {
@@ -173,3 +188,4 @@
     @stack('scripts')
 </body>
 </html>
+

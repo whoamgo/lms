@@ -72,7 +72,7 @@
             width: 100%;
             background: #000;
             border-radius: 12px;
-            /*overflow: hidden;*/
+            overflow: hidden;
             margin-bottom: 24px;
             position: relative;
         }
@@ -132,6 +132,19 @@
         .action-btn:hover {
             background: #3a3a3a;
             border-color: #4a4a4a;
+        }
+        .action-btn.saved {
+            background: #f97316;
+            border-color: #f97316;
+            color: white;
+        }
+        .action-btn.saved:hover {
+            background: #ea580c;
+            border-color: #ea580c;
+        }
+        .action-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
         }
         .video-description {
             background: #1a1a1a;
@@ -332,3 +345,4 @@
     @stack('scripts')
 </body>
 </html>
+

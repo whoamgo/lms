@@ -174,3 +174,4 @@ const LIVE_CLASSES_INDEX_URL = '{{ route("trainer.live-classes") }}';
 <script src="{{ asset('js/trainer-add-class.js') }}"></script>
 @endpush
 @endsection
+

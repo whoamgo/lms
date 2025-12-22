@@ -92,4 +92,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(AdminNotification::class)->where('is_read', false);
     }
+
+    public function savedVideos()
+    {
+        return $this->belongsToMany(Video::class, 'saved_videos', 'student_id', 'video_id');
+    }
 }

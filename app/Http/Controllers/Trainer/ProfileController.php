@@ -52,3 +52,4 @@ class ProfileController extends Controller
         return redirect()->route('trainer.profile')->with('success', 'Profile updated successfully!');
     }
 }
+

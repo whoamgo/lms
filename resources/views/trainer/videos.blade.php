@@ -147,3 +147,4 @@
 @push('scripts')
 <script src="{{ asset('js/trainer-videos.js') }}"></script>
 @endpush
+

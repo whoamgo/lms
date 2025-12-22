@@ -6,8 +6,6 @@
     <a href="{{ route('student.dashboard') }}">Home</a> / Recorded course
 @endsection
 
- 
-
 @section('content')
 <!-- Welcome Banner -->
 <div class="welcome-banner">
@@ -380,3 +378,4 @@ function playVideo(encryptedId) {
 }
 </script>
 @endpush
+

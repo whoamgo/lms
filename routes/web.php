@@ -14,7 +14,7 @@ Route::get('/', function () {
 })->name('home');
 
 Route::get('/login', function () {
-  return view('welcome');
+    return view('welcome');
 })->name('login');
 
 // Admin Routes
@@ -28,13 +28,19 @@ Route::prefix('admin')->group(function () {
         
         // Student Enroll
         Route::get('/student-enroll', [\App\Http\Controllers\Admin\StudentEnrollController::class, 'index'])->name('admin.student-enroll.index');
+        Route::get('/student-enroll/export', [\App\Http\Controllers\Admin\StudentEnrollController::class, 'export'])->name('admin.student-enroll.export');
+        Route::get('/student-enroll/{id}/details', [\App\Http\Controllers\Admin\StudentEnrollController::class, 'getEnrollmentDetails'])->name('admin.student-enroll.details');
         Route::put('/student-enroll/{id}/toggle-status', [\App\Http\Controllers\Admin\StudentEnrollController::class, 'toggleStatus'])->name('admin.student-enroll.toggle-status');
+        Route::delete('/student-enroll/{id}', [\App\Http\Controllers\Admin\StudentEnrollController::class, 'destroy'])->name('admin.student-enroll.destroy');
         
         // Courses
         Route::get('/courses', [\App\Http\Controllers\Admin\CourseController::class, 'index'])->name('admin.courses.index');
+        Route::get('/courses/export', [\App\Http\Controllers\Admin\CourseController::class, 'export'])->name('admin.courses.export');
+        Route::get('/courses/{id}/details', [\App\Http\Controllers\Admin\CourseController::class, 'getCourseDetails'])->name('admin.courses.details');
         Route::get('/courses/create', [\App\Http\Controllers\Admin\CourseController::class, 'create'])->name('admin.courses.create');
         Route::post('/courses', [\App\Http\Controllers\Admin\CourseController::class, 'store'])->name('admin.courses.store');
         Route::put('/courses/{id}/toggle-status', [\App\Http\Controllers\Admin\CourseController::class, 'toggleStatus'])->name('admin.courses.toggle-status');
+        Route::delete('/courses/{id}', [\App\Http\Controllers\Admin\CourseController::class, 'destroy'])->name('admin.courses.destroy');
         
         // Assign Course
         Route::get('/assign-course', [\App\Http\Controllers\Admin\AssignCourseController::class, 'index'])->name('admin.assign-course.index');
@@ -43,20 +49,25 @@ Route::prefix('admin')->group(function () {
         
         // Instructors
         Route::get('/instructors', [\App\Http\Controllers\Admin\InstructorController::class, 'index'])->name('admin.instructors.index');
+        Route::get('/instructors/export', [\App\Http\Controllers\Admin\InstructorController::class, 'export'])->name('admin.instructors.export');
+        Route::get('/instructors/{id}/details', [\App\Http\Controllers\Admin\InstructorController::class, 'getInstructorDetails'])->name('admin.instructors.details');
         Route::get('/instructors/create', [\App\Http\Controllers\Admin\InstructorController::class, 'create'])->name('admin.instructors.create');
         Route::post('/instructors', [\App\Http\Controllers\Admin\InstructorController::class, 'store'])->name('admin.instructors.store');
         Route::get('/instructors/{id}/edit', [\App\Http\Controllers\Admin\InstructorController::class, 'edit'])->name('admin.instructors.edit');
         Route::put('/instructors/{id}', [\App\Http\Controllers\Admin\InstructorController::class, 'update'])->name('admin.instructors.update');
         Route::put('/instructors/{id}/toggle-status', [\App\Http\Controllers\Admin\InstructorController::class, 'toggleStatus'])->name('admin.instructors.toggle-status');
+        Route::delete('/instructors/{id}', [\App\Http\Controllers\Admin\InstructorController::class, 'destroy'])->name('admin.instructors.destroy');
         
         // Hiring Portal
         Route::get('/hiring', [\App\Http\Controllers\Admin\HiringController::class, 'index'])->name('admin.hiring.index');
+        Route::get('/hiring/{id}/details', [\App\Http\Controllers\Admin\HiringController::class, 'getJobDetails'])->name('admin.hiring.details');
         Route::get('/hiring/create', [\App\Http\Controllers\Admin\HiringController::class, 'create'])->name('admin.hiring.create');
         Route::post('/hiring', [\App\Http\Controllers\Admin\HiringController::class, 'store'])->name('admin.hiring.store');
         Route::delete('/hiring/{id}', [\App\Http\Controllers\Admin\HiringController::class, 'destroy'])->name('admin.hiring.destroy');
         
         // Community Queries
         Route::get('/community-queries', [\App\Http\Controllers\Admin\CommunityQueryController::class, 'index'])->name('admin.community-queries.index');
+        Route::get('/community-queries/export', [\App\Http\Controllers\Admin\CommunityQueryController::class, 'export'])->name('admin.community-queries.export');
         Route::post('/community-queries/{id}/assign', [\App\Http\Controllers\Admin\CommunityQueryController::class, 'assignTrainer'])->name('admin.community-queries.assign');
         Route::post('/community-queries/{id}/reply', [\App\Http\Controllers\Admin\CommunityQueryController::class, 'reply'])->name('admin.community-queries.reply');
         Route::post('/community-queries/{id}/close', [\App\Http\Controllers\Admin\CommunityQueryController::class, 'close'])->name('admin.community-queries.close');
@@ -70,13 +81,16 @@ Route::prefix('admin')->group(function () {
         Route::put('/profile', [\App\Http\Controllers\Admin\ProfileController::class, 'update'])->name('admin.profile.update');
         
         // Notifications
-        Route::get('/notifications', [\App\Http\Controllers\Admin\NotificationController::class, 'index'])->name('admin.notifications.index');
-        Route::get('/notifications/{id}', [\App\Http\Controllers\Admin\NotificationController::class, 'show'])->name('admin.notifications.show');
-        Route::post('/notifications/{id}/read', [\App\Http\Controllers\Admin\NotificationController::class, 'markAsRead'])->name('admin.notifications.read');
+
         Route::post('/notifications/mark-all-read', [\App\Http\Controllers\Admin\NotificationController::class, 'markAllAsRead'])->name('admin.notifications.mark-all-read');
         Route::get('/notifications/unread-count', [\App\Http\Controllers\Admin\NotificationController::class, 'getUnreadCount'])->name('admin.notifications.unread-count');
         Route::get('/notifications/recent', [\App\Http\Controllers\Admin\NotificationController::class, 'getRecent'])->name('admin.notifications.recent');
-        
+
+
+        Route::get('/notifications', [\App\Http\Controllers\Admin\NotificationController::class, 'index'])->name('admin.notifications.index');
+        Route::get('/notifications/{id}', [\App\Http\Controllers\Admin\NotificationController::class, 'show'])->name('admin.notifications.show');
+        Route::post('/notifications/{id}/read', [\App\Http\Controllers\Admin\NotificationController::class, 'markAsRead'])->name('admin.notifications.read');
+             
         // Activity Logs
         Route::get('/activity-logs', [\App\Http\Controllers\Admin\ActivityLogController::class, 'index'])->name('admin.activity-logs.index');
         
@@ -117,10 +131,12 @@ Route::prefix('trainer')->group(function () {
         
         // Batches
         Route::get('/active-batches', [\App\Http\Controllers\Trainer\BatchController::class, 'index'])->name('trainer.active-batches');
+        Route::get('/batches/{id}/details', [\App\Http\Controllers\Trainer\BatchController::class, 'getBatchDetails'])->name('trainer.batches.details');
         Route::get('/batches/create', [\App\Http\Controllers\Trainer\BatchController::class, 'create'])->name('trainer.batches.create');
         Route::get('/batches/{id}/edit', [\App\Http\Controllers\Trainer\BatchController::class, 'edit'])->name('trainer.batches.edit');
         Route::post('/batches', [\App\Http\Controllers\Trainer\BatchController::class, 'store'])->name('trainer.batches.store');
         Route::put('/batches/{id}', [\App\Http\Controllers\Trainer\BatchController::class, 'update'])->name('trainer.batches.update');
+        Route::delete('/batches/{id}', [\App\Http\Controllers\Trainer\BatchController::class, 'destroy'])->name('trainer.batches.destroy');
         
         // Live Classes
         Route::get('/live-classes', [\App\Http\Controllers\Trainer\LiveClassController::class, 'index'])->name('trainer.live-classes');
@@ -163,11 +179,13 @@ Route::prefix('trainer')->group(function () {
         Route::post('/satsangs', [\App\Http\Controllers\Trainer\SatsangController::class, 'store'])->name('trainer.satsangs.store');
         
         // Notifications
-        Route::get('/notifications', [\App\Http\Controllers\Trainer\NotificationController::class, 'index'])->name('trainer.notifications.index');
-        Route::get('/notifications/unread-count', [\App\Http\Controllers\Trainer\NotificationController::class, 'getUnreadCount'])->name('trainer.notifications.unread-count');
         Route::get('/notifications/recent', [\App\Http\Controllers\Trainer\NotificationController::class, 'getRecent'])->name('trainer.notifications.recent');
-        Route::post('/notifications/{id}/read', [\App\Http\Controllers\Trainer\NotificationController::class, 'markAsRead'])->name('trainer.notifications.read');
         Route::post('/notifications/mark-all-read', [\App\Http\Controllers\Trainer\NotificationController::class, 'markAllAsRead'])->name('trainer.notifications.mark-all-read');
+        Route::get('/notifications/unread-count', [\App\Http\Controllers\Trainer\NotificationController::class, 'getUnreadCount'])->name('trainer.notifications.unread-count');
+
+
+        Route::get('/notifications', [\App\Http\Controllers\Trainer\NotificationController::class, 'index'])->name('trainer.notifications.index');
+        Route::post('/notifications/{id}/read', [\App\Http\Controllers\Trainer\NotificationController::class, 'markAsRead'])->name('trainer.notifications.read');
     });
 });
 
@@ -205,12 +223,14 @@ Route::prefix('student')->group(function () {
         // Watch Video
         Route::get('/videos/{encryptedId}/watch', [\App\Http\Controllers\Student\CourseController::class, 'watchVideo'])->name('student.videos.watch');
         Route::post('/videos/{encryptedId}/mark-completed', [\App\Http\Controllers\Student\CourseController::class, 'markVideoCompleted'])->name('student.videos.mark-completed');
+        Route::post('/videos/{encryptedId}/toggle-save', [\App\Http\Controllers\Student\CourseController::class, 'toggleSaveVideo'])->name('student.videos.toggle-save');
         
         // Notifications
+        Route::get('/notifications/recent', [\App\Http\Controllers\Student\NotificationController::class, 'getRecent'])->name('student.notifications.recent');
+        Route::post('/notifications/mark-all-read', [\App\Http\Controllers\Student\NotificationController::class, 'markAllAsRead'])->name('student.notifications.mark-all-read');
+
         Route::get('/notifications', [\App\Http\Controllers\Student\NotificationController::class, 'index'])->name('student.notifications.index');
         Route::get('/notifications/unread-count', [\App\Http\Controllers\Student\NotificationController::class, 'getUnreadCount'])->name('student.notifications.unread-count');
-        Route::get('/notifications/recent', [\App\Http\Controllers\Student\NotificationController::class, 'getRecent'])->name('student.notifications.recent');
         Route::post('/notifications/{id}/read', [\App\Http\Controllers\Student\NotificationController::class, 'markAsRead'])->name('student.notifications.read');
-        Route::post('/notifications/mark-all-read', [\App\Http\Controllers\Student\NotificationController::class, 'markAllAsRead'])->name('student.notifications.mark-all-read');
     });
 });

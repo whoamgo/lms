@@ -44,7 +44,7 @@
                         </span>
                     </td>
                     <td>
-                        <a href="{{ route('admin.notifications.show', $notification->id) }}" class="btn btn-primary" style="padding: 6px 12px; font-size: 0.75rem;">View</a>
+                        <a href="{{ route('admin.notifications.show', $notification->id) }}" class="btn btn-primary btn-sm">View</a>
                     </td>
                 </tr>
                 @endforeach
@@ -53,3 +53,42 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+$(document).ready(function() {
+    // Destroy existing DataTable instance if it exists
+    if ($.fn.DataTable.isDataTable('.data-table')) {
+        $('.data-table').DataTable().destroy();
+    }
+    
+    $('.data-table').DataTable({
+        order: [[3, 'desc']],
+        pageLength: 25,
+        responsive: true,
+        autoWidth: false,
+        scrollX: true,
+        processing: true,
+        language: {
+            search: "",
+            searchPlaceholder: "Search notifications...",
+            lengthMenu: "Show _MENU_ entries",
+            info: "Showing _START_ to _END_ of _TOTAL_ entries",
+            infoEmpty: "No entries found",
+            infoFiltered: "(filtered from _MAX_ total entries)",
+            paginate: {
+                first: "First",
+                last: "Last",
+                next: "Next",
+                previous: "Previous"
+            },
+            processing: "Loading..."
+        },
+        dom: '<"table-header-wrapper"<"table-header-left"l><"table-header-right"f>>rt<"table-footer-wrapper"<"table-footer-left"i><"table-footer-right"p>>',
+        columnDefs: [
+            { orderable: false, targets: [5] }
+        ]
+    });
+});
+</script>
+@endpush

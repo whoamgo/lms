@@ -16,9 +16,9 @@
         @csrf
         @method('PUT')
         
-        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 24px;">
+        <div class="profile-form-grid">
             <div>
-                <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 20px;">Basic Information</h3>
+                <h3 class="form-section-title">Basic Information</h3>
                 
                 <div class="form-group">
                     <label>Full Name*</label>
@@ -40,7 +40,7 @@
                     <textarea name="address" rows="3">{{ $admin->address ?? '' }}</textarea>
                 </div>
                 
-                <h3 style="font-size: 1rem; font-weight: 600; margin: 32px 0 20px;">Change Password</h3>
+                <h3 class="form-section-title form-section-title-spaced">Change Password</h3>
                 
                 <div class="form-group">
                     <label>Current Password</label>
@@ -61,21 +61,21 @@
             <div>
                 <div class="form-group">
                     <label>Profile Picture</label>
-                    <input type="file" name="avatar" id="avatar" accept="image/*" style="display: none;" onchange="handleImageUpload(this, 'avatarPreview')">
-                    <div style="border: 1px solid #e5e5e6; border-radius: 8px; padding: 24px; background: #f9fafb; text-align: center; min-height: 400px; display: flex; align-items: center; justify-content: center; cursor: pointer;" onclick="document.getElementById('avatar').click()">
+                    <input type="file" name="avatar" id="avatar" accept="image/*" class="hidden-input" onchange="handleImageUpload(this, 'avatarPreview')">
+                    <div class="avatar-upload-area" onclick="document.getElementById('avatar').click()">
                         <div>
                             <div id="avatarPreview">
                                 @if($admin->avatar)
-                                    <img src="{{ asset($admin->avatar) }}" style="max-width: 200px; border-radius: 8px; border: 1px solid #e5e5e6; margin-bottom: 16px;">
+                                    <img src="{{ asset($admin->avatar) }}" class="avatar-preview-img">
                                 @else
-                                    <div style="width: 120px; height: 120px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
-                                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 64px; height: 64px; color: white;">
+                                    <div class="avatar-placeholder-large">
+                                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="avatar-placeholder-icon">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                                         </svg>
                                     </div>
                                 @endif
                             </div>
-                            <button type="button" class="btn btn-secondary">Upload Photo</button>
+                            <button type="button" class="btn btn-dark">Upload Photo</button>
                         </div>
                     </div>
                 </div>
@@ -89,7 +89,7 @@
                             const reader = new FileReader();
                             reader.onload = function(e) {
                                 const preview = document.getElementById(previewId);
-                                preview.innerHTML = `<img src="${e.target.result}" style="max-width: 200px; border-radius: 8px; border: 1px solid #e5e5e6; margin-bottom: 16px;">`;
+                                preview.innerHTML = `<img src="${e.target.result}" class="avatar-preview-img">`;
                             };
                             reader.readAsDataURL(file);
                         } else {
@@ -100,7 +100,7 @@
             </script>
         </div>
         
-        <div style="margin-top: 24px; display: flex; gap: 12px;">
+        <div class="form-actions">
             <button type="submit" class="btn btn-primary">Update Profile</button>
         </div>
     </form>

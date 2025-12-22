@@ -105,3 +105,4 @@ class LogHelper
         self::error('Exception occurred: ' . $exception->getMessage(), $context, $module);
     }
 }
+

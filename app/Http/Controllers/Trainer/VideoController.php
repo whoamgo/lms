@@ -8,6 +8,7 @@ use App\Models\Course;
 use App\Models\Batch;
 use App\Models\Playlist;
 use App\Helpers\EncryptionHelper;
+use App\Helpers\NotificationHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -123,6 +124,13 @@ class VideoController extends Controller
             $video = Video::create($validated);
 
             \App\Models\ActivityLog::log('created', $video, 'Video uploaded: ' . $video->title);
+            
+            // Send notification to admin
+            $trainer = Auth::user();
+            $course = \App\Models\Course::find($validated['course_id']);
+            if ($course) {
+                \App\Helpers\NotificationHelper::adminVideoUploaded($trainer->name, $course->title);
+            }
 
             DB::commit();
 
@@ -362,3 +370,4 @@ class VideoController extends Controller
         }
     }
 }
+

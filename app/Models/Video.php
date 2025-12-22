@@ -42,4 +42,9 @@ class Video extends Model
     {
         return $this->belongsTo(User::class, 'trainer_id');
     }
+
+    public function savedBy()
+    {
+        return $this->belongsToMany(User::class, 'saved_videos', 'video_id', 'student_id');
+    }
 }

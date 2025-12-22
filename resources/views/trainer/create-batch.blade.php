@@ -56,6 +56,33 @@
                 <textarea name="description" rows="6" placeholder="Write about the course...">{{ old('description') }}</textarea>
             </div>
             
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Start Date*</label>
+                    <input type="date" name="start_date" value="{{ old('start_date') }}" required>
+                </div>
+                <div class="form-group">
+                    <label>End Date*</label>
+                    <input type="date" name="end_date" value="{{ old('end_date') }}" required>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Class Time</label>
+                    <input type="time" name="class_time" value="{{ old('class_time') }}">
+                </div>
+                <div class="form-group">
+                    <label>Close Time</label>
+                    <input type="time" name="close_time" value="{{ old('close_time') }}">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Max Students Join*</label>
+                <input type="number" name="max_students" value="{{ old('max_students', 30) }}" min="1" required placeholder="Enter maximum students">
+            </div>
+            
             <div class="form-group">
                 <label>Upload Thumbnail</label>
                 <div style="border: 2px dashed #e5e5e6; border-radius: 8px; padding: 40px; text-align: center; background: #f9fafb; cursor: pointer; position: relative;" onclick="document.getElementById('thumbnail').click()">
@@ -96,3 +123,4 @@ function handleImageUpload(input, previewId) {
 </script>
 @endpush
 @endsection
+

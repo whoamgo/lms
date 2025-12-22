@@ -6,380 +6,28 @@
     <title>@yield('title', 'Admin Dashboard') - LMS</title>
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700" rel="stylesheet" />
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
     <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: var(--bg-secondary, #f5f5f5);
-            color: var(--text-primary, #1a1a1a);
-            display: flex;
-            min-height: 100vh;
-        }
-        .sidebar {
-            width: 260px;
-            background: var(--sidebar-bg, #ffffff);
-            border-right: 1px solid var(--border-color, #e5e5e6);
-            height: 100vh;
-            position: fixed;
-            left: 0;
-            top: 0;
-            padding: 24px 0;
-            overflow-y: auto;
-        }
-        .sidebar-header {
-            padding: 0 20px 24px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            border-bottom: 1px solid #e5e5e6;
-            margin-bottom: 24px;
-        }
-        .sidebar-header .icon {
-            width: 32px;
-            height: 32px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-        }
-        .sidebar-header h2 {
-            font-size: 1.125rem;
-            font-weight: 600;
-            color: var(--text-primary, #1a1a1a);
-        }
-        .sidebar-menu {
-            list-style: none;
-            padding: 0 12px;
-        }
-        .sidebar-menu li {
-            margin-bottom: 4px;
-        }
-        .sidebar-menu li a {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 16px;
-            color: var(--text-secondary, #6b7280);
-            text-decoration: none;
-            border-radius: 8px;
-            transition: all 0.2s;
-            font-size: 0.875rem;
-        }
-        .sidebar-menu li a:hover {
-            background: var(--bg-secondary, #f3f4f6);
-            color: var(--text-primary, #1a1a1a);
-        }
-        .sidebar-menu li a.active {
-            /*background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%);*/
-            background: linear-gradient(to right, #ff6600, #fb3233);
-            color: white;
-        }
-        .sidebar-menu li a svg {
-            width: 20px;
-            height: 20px;
-        }
-        .sidebar-account {
-            padding: 12px 20px;
-            margin-top: auto;
-            border-top: 1px solid #e5e5e6;
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            background: white;
-        }
-        .sidebar-account h3 {
-            font-size: 0.75rem;
-            color: #9ca3af;
-            margin-bottom: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .sidebar-account a {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: #6b7280;
-            text-decoration: none;
-            font-size: 0.875rem;
-            padding: 8px 0;
-        }
-        .sidebar-account a:hover {
-            color: #1a1a1a;
-        }
-        .main-content {
-            margin-left: 260px;
-            flex: 1;
-            min-height: 100vh;
-        }
-        .topbar {
-            background: var(--card-bg, white);
-            padding: 16px 24px;
-            border-bottom: 1px solid var(--border-color, #e5e5e6);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .breadcrumbs {
-            font-size: 0.875rem;
-            color: var(--text-secondary, #6b7280);
-        }
-        .breadcrumbs a {
-            color: #667eea;
-            text-decoration: none;
-        }
-        .topbar-right {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-        .notification-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
-            background: var(--bg-secondary, #f3f4f6);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            position: relative;
-        }
-        .notification-icon svg {
-            width: 20px;
-            height: 20px;
-            color: var(--text-secondary, #6b7280);
-        }
-        .admin-banner {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 32px 24px;
-            margin: 24px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            color: white;
-        }
-        .admin-banner .icon {
-            width: 64px;
-            height: 64px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .admin-banner h1 {
-            font-size: 1.5rem;
-            font-weight: 600;
-        }
-        .content-area {
-            padding: 0 24px 24px;
-        }
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 24px;
-            margin-bottom: 24px;
-        }
-        .stat-card {
-            background: var(--card-bg, white);
-            border-radius: 12px;
-            padding: 24px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-        .stat-card .icon {
-            width: 56px;
-            height: 56px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .stat-card .icon.green {
-            background: #d1fae5;
-            color: #059669;
-        }
-        .stat-card .icon.blue {
-            background: #dbeafe;
-            color: #2563eb;
-        }
-        .stat-card .icon.yellow {
-            background: #fef3c7;
-            color: #d97706;
-        }
-        .stat-card .content h3 {
-            font-size: 0.875rem;
-            color: #6b7280;
-            margin-bottom: 4px;
-        }
-        .stat-card .content .value {
-            font-size: 1.75rem;
-            font-weight: 600;
-            color: #1a1a1a;
-        }
-        .card {
-            background: var(--card-bg, white);
-            border-radius: 12px;
-            padding: 24px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            margin-bottom: 24px;
-            color: var(--text-primary, #1a1a1a);
-        }
-        .card h2 {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 24px;
-        }
-        .search-filter-bar {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 24px;
-            flex-wrap: wrap;
-        }
-        .search-input {
-            flex: 1;
-            min-width: 300px;
-            padding: 12px 16px;
-            border: 1px solid #e5e5e6;
-            border-radius: 8px;
-            font-size: 0.875rem;
-        }
-        .btn {
-            padding: 12px 24px;
-            border-radius: 8px;
-            border: none;
-            font-weight: 500;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.875rem;
-            transition: all 0.2s;
-        }
-        .btn-primary {
-            background: #2563eb;
-            color: white;
-        }
-        .btn-primary:hover {
-            background: #1d4ed8;
-        }
-        .btn-secondary {
-            background: #f3f4f6;
-            color: #1a1a1a;
-            border: 1px solid #e5e5e6;
-        }
-        .btn-secondary:hover {
-            background: #e5e7eb;
-        }
-        .btn-warning {
-            background: #fbbf24;
-            color: white;
-        }
-        .btn-warning:hover {
-            background: #f59e0b;
-        }
-        .table-container {
-            overflow-x: auto;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        thead {
-            background: var(--bg-secondary, #f9fafb);
-        }
-        th {
-            padding: 12px 16px;
-            text-align: left;
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--text-secondary, #6b7280);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        td {
-            padding: 16px;
-            border-top: 1px solid var(--border-color, #e5e5e6);
-            font-size: 0.875rem;
-            color: var(--text-primary, #1a1a1a);
-        }
-        .badge {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            font-weight: 500;
-        }
-        .badge-success {
-            background: #d1fae5;
-            color: #059669;
-        }
-        .badge-danger {
-            background: #fee2e2;
-            color: #dc2626;
-        }
-        .badge-info {
-            background: #dbeafe;
-            color: #2563eb;
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        .form-group label {
-            display: block;
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: #374151;
-            margin-bottom: 8px;
-        }
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 12px 16px;
-            border: 1px solid var(--border-color, #e5e5e6);
-            border-radius: 8px;
-            font-size: 0.875rem;
-            transition: all 0.2s;
-            background: var(--bg-primary, white);
-            color: var(--text-primary, #1a1a1a);
-        }
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-        .form-row {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-        }
-        @media (max-width: 768px) {
-            .form-row {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+    <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
     @stack('styles')
 </head>
 <body>
-    <div class="sidebar">
+    <!-- Mobile Menu Toggle -->
+    <button class="mobile-menu-toggle" id="mobileMenuToggle" type="button">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+    </button>
+    
+    <!-- Mobile Overlay -->
+    <div class="mobile-overlay" id="mobileOverlay"></div>
+    
+    <div class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <div class="icon">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -424,18 +72,18 @@
         </ul>
         <div class="sidebar-account">
             <h3>Account</h3>
-            <a href="{{ route('admin.settings.index') }}">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 16px; height: 16px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+            <a href="{{ route('admin.settings.index') }}" class="sidebar-account-link">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="sidebar-account-icon"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                 Settings
             </a>
-            <a href="{{ route('admin.profile.index') }}" style="margin-top: 8px;">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 16px; height: 16px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+            <a href="{{ route('admin.profile.index') }}" class="sidebar-account-link">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="sidebar-account-icon"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
                 Profile
             </a>
-            <form action="{{ route('admin.logout') }}" method="POST" style="margin-top: 8px;">
+            <form action="{{ route('admin.logout') }}" method="POST" class="sidebar-account-form">
                 @csrf
-                <button type="submit" style="background: none; border: none; color: #6b7280; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 0.875rem; padding: 8px 0; width: 100%; text-align: left;">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 16px; height: 16px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                <button type="submit" class="sidebar-account-button">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="sidebar-account-icon"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
                     Logout
                 </button>
             </form>
@@ -451,7 +99,7 @@
                     <a href="{{ route('admin.dashboard') }}">Home</a>
                 @endif
             </div>
-            <div class="topbar-right" style="display: flex; align-items: center; gap: 16px;">
+            <div class="topbar-right">
                 <!-- Header Search -->
                 <div class="header-search">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -461,33 +109,33 @@
                 </div>
                 
                 <!-- Theme Toggle -->
-                <button style="display:none;" class="theme-toggle" id="themeToggle" type="button">
-                    <svg id="lightIcon" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 18px; height: 18px; display: none;">
+                <button class="theme-toggle" id="themeToggle" type="button">
+                    <svg id="lightIcon" fill="none" stroke="currentColor" viewBox="0 0 24 24" class="theme-icon theme-icon-hidden">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
                     </svg>
-                     <svg id="darkIcon" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 18px; height: 18px;">
+                     <svg id="darkIcon" fill="none" stroke="currentColor" viewBox="0 0 24 24" class="theme-icon">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
                     </svg>  
                 </button>
                 
                 <!-- Notifications -->
-                <div style="position: relative;">
-                    <div class="notification-icon" id="notificationIcon" style="cursor: pointer;">
+                <div class="notification-wrapper">
+                    <div class="notification-icon" id="notificationIcon">
                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
                         </svg>
-                        <span class="notification-badge" id="notificationBadge" style="display: none;">0</span>
+                        <span class="notification-badge" id="notificationBadge">0</span>
                     </div>
                     <div class="notification-dropdown" id="notificationDropdown">
-                        <div style="padding: 16px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
-                            <h3 style="font-size: 1rem; font-weight: 600;">Notifications</h3>
-                            <button onclick="markAllAsRead()" style="background: none; border: none; color: var(--text-secondary); cursor: pointer; font-size: 0.875rem;">Mark all as read</button>
+                        <div class="notification-dropdown-header">
+                            <h3>Notifications</h3>
+                            <button onclick="markAllAsRead()" class="notification-mark-all-btn">Mark all as read</button>
                         </div>
                         <div id="notificationList">
-                            <div style="padding: 40px; text-align: center; color: var(--text-secondary);">No notifications</div>
+                            <div class="notification-empty">No notifications</div>
                         </div>
-                        <div style="padding: 12px; text-align: center; border-top: 1px solid var(--border-color);">
-                            <a href="{{ route('admin.notifications.index') }}" style="color: var(--text-primary); text-decoration: none; font-size: 0.875rem;">View all notifications</a>
+                        <div class="notification-dropdown-footer">
+                            <a href="{{ route('admin.notifications.index') }}">View all notifications</a>
                         </div>
                     </div>
                 </div>
@@ -503,8 +151,8 @@
     
     <!-- Success/Error Messages -->
     @if(session('success'))
-    <div class="alert alert-success" style="position: fixed; top: 80px; right: 24px; z-index: 9999; min-width: 300px;">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 20px; height: 20px;">
+    <div class="alert alert-success alert-fixed">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="alert-icon">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
         </svg>
         {{ session('success') }}
@@ -512,8 +160,8 @@
     @endif
 
     @if(session('error'))
-    <div class="alert alert-error" style="position: fixed; top: 80px; right: 24px; z-index: 9999; min-width: 300px;">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 20px; height: 20px;">
+    <div class="alert alert-error alert-fixed">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="alert-icon">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
         </svg>
         {{ session('error') }}
@@ -521,13 +169,13 @@
     @endif
 
     @if($errors->any())
-    <div class="alert alert-error" style="position: fixed; top: 80px; right: 24px; z-index: 9999; min-width: 300px;">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 20px; height: 20px;">
+    <div class="alert alert-error alert-fixed">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="alert-icon">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
         </svg>
         <div>
             <strong>Please fix the following errors:</strong>
-            <ul style="margin-top: 8px; padding-left: 20px;">
+            <ul class="alert-error-list">
                 @foreach($errors->all() as $error)
                 <li>{{ $error }}</li>
                 @endforeach
@@ -538,6 +186,27 @@
 
     <script src="{{ asset('js/admin.js') }}"></script>
     <script>
+        // Mobile menu toggle
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+        const sidebar = document.getElementById('sidebar');
+        const mobileOverlay = document.getElementById('mobileOverlay');
+        
+        if (mobileMenuToggle) {
+            mobileMenuToggle.addEventListener('click', function() {
+                sidebar.classList.toggle('mobile-open');
+                mobileOverlay.classList.toggle('active');
+                document.body.style.overflow = sidebar.classList.contains('mobile-open') ? 'hidden' : '';
+            });
+        }
+        
+        if (mobileOverlay) {
+            mobileOverlay.addEventListener('click', function() {
+                sidebar.classList.remove('mobile-open');
+                mobileOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        }
+        
         // Notification dropdown toggle
         document.getElementById('notificationIcon')?.addEventListener('click', function(e) {
             e.stopPropagation();
@@ -555,17 +224,18 @@
 
         // Load notifications
         function loadNotifications() {
+          //  alert("Sss")
             fetch('{{ route("admin.notifications.recent") }}')
                 .then(response => response.json())
                 .then(data => {
                     const list = document.getElementById('notificationList');
                     if (data.length === 0) {
-                        list.innerHTML = '<div style="padding: 40px; text-align: center; color: var(--text-secondary);">No notifications</div>';
+                        list.innerHTML = '<div class="notification-empty">No notifications...</div>';
                     } else {
                         list.innerHTML = data.map(notif => `
                             <div class="notification-item ${notif.is_read ? '' : 'unread'}" onclick="window.location.href='{{ url('admin/notifications') }}/${notif.id}'">
-                                <div style="font-weight: ${notif.is_read ? '400' : '600'}; margin-bottom: 4px;">${notif.title}</div>
-                                <div style="font-size: 0.75rem; color: var(--text-secondary);">${notif.message.substring(0, 50)}...</div>
+                                <div class="notification-item-title ${notif.is_read ? '' : 'notification-unread-title'}">${notif.title}</div>
+                                <div class="notification-item-message">${notif.message.substring(0, 50)}...</div>
                             </div>
                         `).join('');
                     }
@@ -587,7 +257,7 @@
 
         // Auto-hide alerts
         setTimeout(() => {
-            document.querySelectorAll('.alert').forEach(alert => {
+            document.querySelectorAll('.alert-fixed').forEach(alert => {
                 alert.style.transition = 'opacity 0.5s';
                 alert.style.opacity = '0';
                 setTimeout(() => alert.remove(), 500);

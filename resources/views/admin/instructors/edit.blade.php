@@ -20,9 +20,9 @@
             $lastName = $nameParts[1] ?? '';
         @endphp
         
-        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 24px;">
+        <div class="instructor-form-grid">
             <div>
-                <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 20px;">Basic information</h3>
+                <h3 class="form-section-title">Basic information</h3>
                 
                 <div class="form-row">
                     <div class="form-group">
@@ -48,19 +48,19 @@
                 
                 <div class="form-group">
                     <label>Mo No.</label>
-                    <div style="display: flex; gap: 8px;">
-                        <select style="width: 100px;">
+                    <div class="phone-input-group">
+                        <select class="phone-country-select">
                             <option>+91</option>
                         </select>
-                        <input type="text" name="phone" style="flex: 1;" placeholder="Enter mobile number" value="{{ old('phone', $instructor->phone) }}">
+                        <input type="text" name="phone" class="phone-number-input" placeholder="Enter mobile number" value="{{ old('phone', $instructor->phone) }}">
                     </div>
                 </div>
                 
-                <h3 style="font-size: 1rem; font-weight: 600; margin: 32px 0 20px;">Instructor course</h3>
+                <h3 class="form-section-title form-section-title-spaced">Instructor course</h3>
                 
-                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
+                <div class="courses-checkbox-grid">
                     @foreach($courses as $course)
-                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                    <label class="course-checkbox-label">
                         <input type="checkbox" name="courses[]" value="{{ $course->id }}" {{ in_array($course->id, $assignedCourseIds) ? 'checked' : '' }}>
                         <span>{{ $course->title }}</span>
                     </label>
@@ -71,28 +71,28 @@
             <div>
                 <div class="form-group">
                     <label>Profile Picture</label>
-                    <input type="file" name="avatar" id="avatar" accept="image/*" style="display: none;" onchange="handleImageUpload(this, 'avatarPreview')">
-                    <div style="border: 1px solid #e5e5e6; border-radius: 8px; padding: 24px; background: #f9fafb; text-align: center; min-height: 400px; display: flex; align-items: center; justify-content: center; cursor: pointer;" onclick="document.getElementById('avatar').click()">
+                    <input type="file" name="avatar" id="avatar" accept="image/*" class="hidden-input" onchange="handleImageUpload(this, 'avatarPreview')">
+                    <div class="avatar-upload-area" onclick="document.getElementById('avatar').click()">
                         <div>
                             <div id="avatarPreview">
                                 @if($instructor->avatar)
-                                    <img src="{{ asset($instructor->avatar) }}" style="max-width: 200px; border-radius: 8px; border: 1px solid #e5e5e6; margin-bottom: 16px;">
+                                    <img src="{{ asset($instructor->avatar) }}" class="image-preview-img instructor-avatar-preview">
                                 @else
-                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 120px; height: 120px; color: #9ca3af; margin-bottom: 16px;">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="avatar-placeholder-icon-large">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                                     </svg>
                                 @endif
                             </div>
-                            <p style="color: #6b7280; margin-top: 16px;" id="avatarText">Click to upload profile picture</p>
+                            <p class="avatar-upload-text" id="avatarText">Click to upload profile picture</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         
-        <div style="margin-top: 24px; display: flex; gap: 12px;">
+        <div class="form-actions">
             <button type="submit" class="btn btn-primary">Update Instructor</button>
-            <a href="{{ route('admin.instructors.index') }}" class="btn btn-secondary">Cancel</a>
+            <a href="{{ route('admin.instructors.index') }}" class="btn btn-dark">Cancel</a>
         </div>
     </form>
 </div>
@@ -106,7 +106,7 @@
                 reader.onload = function(e) {
                     const preview = document.getElementById(previewId);
                     const text = document.getElementById('avatarText');
-                    preview.innerHTML = `<img src="${e.target.result}" style="max-width: 200px; border-radius: 8px; border: 1px solid #e5e5e6; margin-bottom: 16px;">`;
+                    preview.innerHTML = `<img src="${e.target.result}" class="image-preview-img instructor-avatar-preview">`;
                     if (text) text.style.display = 'none';
                 };
                 reader.readAsDataURL(file);

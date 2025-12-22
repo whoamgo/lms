@@ -85,8 +85,24 @@ class AssignCourseController extends Controller
     public function removeTrainer(Request $request, $courseId, $trainerId)
     {
         try {
+            // Validate IDs are numeric
+            if (!is_numeric($courseId) || !is_numeric($trainerId)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Invalid course or trainer ID.'
+                ], 400);
+            }
+            
             $course = Course::findOrFail($courseId);
-            $trainer = User::findOrFail($trainerId);
+            $trainer = User::where('role', 'trainer')->findOrFail($trainerId);
+
+            // Check if trainer is assigned to this course
+            if (!$course->trainers()->where('trainer_id', $trainer->id)->exists()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Trainer is not assigned to this course.'
+                ], 400);
+            }
 
             // Remove trainer from course
             $course->trainers()->detach($trainer->id);
@@ -101,6 +117,12 @@ class AssignCourseController extends Controller
                     'name' => $trainer->name,
                 ]
             ]);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            LogHelper::exception($e, 'admin', ['action' => 'remove_trainer', 'course_id' => $courseId, 'trainer_id' => $trainerId]);
+            return response()->json([
+                'success' => false,
+                'message' => 'Course or trainer not found.'
+            ], 404);
         } catch (\Exception $e) {
             LogHelper::exception($e, 'admin', ['action' => 'remove_trainer', 'course_id' => $courseId, 'trainer_id' => $trainerId]);
             return response()->json([
@@ -110,3 +132,4 @@ class AssignCourseController extends Controller
         }
     }
 }
+

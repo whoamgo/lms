@@ -137,15 +137,19 @@ $(document).ready(function() {
 
 // Modal Functions
 function openAddQuizModal() {
-    $('#quizModalTitle').text('Add New Quiz');
+    $('#addQuizModalLabel').text('Add New Quiz');
     $('#quizId').val('');
     $('#quizSubmitBtn').text('Add Quiz');
     $('#addQuizForm')[0].reset();
-    $('#addQuizModal').addClass('active').css('display', 'flex');
+    const modal = new bootstrap.Modal(document.getElementById('addQuizModal'));
+    modal.show();
 }
 
 function closeAddQuizModal() {
-    $('#addQuizModal').removeClass('active').css('display', 'none');
+    const modal = bootstrap.Modal.getInstance(document.getElementById('addQuizModal'));
+    if (modal) {
+        modal.hide();
+    }
     $('#addQuizForm')[0].reset();
     $('#quizId').val('');
 }
@@ -160,7 +164,7 @@ function editQuiz(quizId) {
         success: function(response) {
             if (response.success) {
                 const quiz = response.quiz;
-                $('#quizModalTitle').text('Edit Quiz');
+                $('#addQuizModalLabel').text('Edit Quiz');
                 $('#quizSubmitBtn').text('Update Quiz');
                 $('#quizId').val(quiz.id);
                 $('#quizTitle').val(quiz.title);
@@ -169,7 +173,8 @@ function editQuiz(quizId) {
                 $('#quizCourse').val(quiz.course_id);
                 $('#quizTimeLimit').val(quiz.time_limit);
                 $('#quizStatus').val(quiz.status);
-                $('#addQuizModal').addClass('active').css('display', 'flex');
+                const modal = new bootstrap.Modal(document.getElementById('addQuizModal'));
+                modal.show();
             }
         },
         error: function() {
@@ -209,11 +214,15 @@ function deleteQuiz(quizId) {
 
 function openAddQuestionModal(quizId) {
     $('#questionQuizId').val(quizId);
-    $('#addQuestionModal').addClass('active').css('display', 'flex');
+    const modal = new bootstrap.Modal(document.getElementById('addQuestionModal'));
+    modal.show();
 }
 
 function closeAddQuestionModal() {
-    $('#addQuestionModal').removeClass('active').css('display', 'none');
+    const modal = bootstrap.Modal.getInstance(document.getElementById('addQuestionModal'));
+    if (modal) {
+        modal.hide();
+    }
     $('#addQuestionForm')[0].reset();
     // Reset answers to default 3
     resetAnswers();
@@ -432,7 +441,8 @@ function viewQuizQuestions(quizId) {
                 }
                 
                 $('#questionsList').html(html);
-                $('#viewQuestionsModal').addClass('active').css('display', 'flex');
+                const modal = new bootstrap.Modal(document.getElementById('viewQuestionsModal'));
+                modal.show();
             }
         },
         error: function() {
@@ -442,7 +452,10 @@ function viewQuizQuestions(quizId) {
 }
 
 function closeViewQuestionsModal() {
-    $('#viewQuestionsModal').removeClass('active').css('display', 'none');
+    const modal = bootstrap.Modal.getInstance(document.getElementById('viewQuestionsModal'));
+    if (modal) {
+        modal.hide();
+    }
     $('#questionsList').html('');
 }
 
@@ -482,3 +495,4 @@ $(document).on('click', '.modal', function(e) {
         $(this).removeClass('active').css('display', 'none');
     }
 });
+

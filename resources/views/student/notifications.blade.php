@@ -40,15 +40,15 @@
     
     <div class="notifications-stats">
         <div class="notification-stat-card">
-            <div class="notification-stat-value">{{ $notifications->where('is_read', false)->count() }}</div>
+            <div class="notification-stat-value">{{ isset($allNotifications) ? $allNotifications->where('is_read', false)->count() : $notifications->where('is_read', false)->count() }}</div>
             <div class="notification-stat-label">Unread</div>
         </div>
         <div class="notification-stat-card">
-            <div class="notification-stat-value">{{ $notifications->where('is_read', true)->count() }}</div>
+            <div class="notification-stat-value">{{ isset($allNotifications) ? $allNotifications->where('is_read', true)->count() : $notifications->where('is_read', true)->count() }}</div>
             <div class="notification-stat-label">Read</div>
         </div>
         <div class="notification-stat-card">
-            <div class="notification-stat-value">{{ $notifications->count() }}</div>
+            <div class="notification-stat-value">{{ isset($allNotifications) ? $allNotifications->count() : $notifications->count() }}</div>
             <div class="notification-stat-label">Total</div>
         </div>
     </div>
@@ -90,6 +90,14 @@
                 <p class="notifications-empty-text">No notifications found.</p>
             </div>
         @endforelse
+        
+        @if(isset($hasMore) && $hasMore && !$showAll)
+            <div style="text-align: center; margin-top: 24px;">
+                <a href="{{ route('student.notifications.index', ['show_all' => true]) }}" class="btn btn-purple">
+                    View More ({{ $allNotifications->count() - 3 }} more)
+                </a>
+            </div>
+        @endif
     </div>
 </div>
 @endsection
@@ -399,3 +407,4 @@ function markAllAsRead() {
 }
 </script>
 @endpush
+

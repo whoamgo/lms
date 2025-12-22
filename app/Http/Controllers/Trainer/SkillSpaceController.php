@@ -12,3 +12,4 @@ class SkillSpaceController extends Controller
         return view('trainer.skillspace');
     }
 }
+

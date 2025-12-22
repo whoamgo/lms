@@ -7,33 +7,34 @@
 @endsection
 
 @section('content')
+<br><br>
 <div class="card">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+    <div class="notification-header">
         <h2>{{ $notification->title }}</h2>
         <span class="badge badge-{{ $notification->type === 'error' ? 'danger' : ($notification->type === 'success' ? 'success' : 'info') }}">
             {{ ucfirst($notification->type) }}
         </span>
     </div>
     
-    <div style="margin-bottom: 16px;">
+    <div class="notification-date">
         <strong>Date:</strong> {{ $notification->created_at ? $notification->created_at->format('d/m/Y') : 'N/A' }}
     </div>
     
-    <div style="margin-bottom: 24px;">
+    <div class="notification-message-section">
         <strong>Message:</strong>
-        <div style="margin-top: 8px; padding: 16px; background: #f9fafb; border-radius: 8px;">
+        <div class="notification-message-box">
             {{ $notification->message }}
         </div>
     </div>
     
     @if($notification->link)
-    <div style="margin-bottom: 24px;">
+    <div class="notification-link-section">
         <a href="{{ $notification->link }}" class="btn btn-primary">View Related Item</a>
     </div>
     @endif
     
     <div>
-        <a href="{{ route('admin.notifications.index') }}" class="btn btn-secondary">Back to Notifications</a>
+        <a href="{{ route('admin.notifications.index') }}" class="btn btn-dark">Back to Notifications</a>
     </div>
 </div>
 @endsection

@@ -11,6 +11,7 @@
         "jenssegers/date": "^2.0",
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1",
+        "maatwebsite/excel": "^3.1",
         "mckenziearts/laravel-notify": "^3.0"
     },
     "require-dev": {
@@ -30,7 +31,8 @@
         },
         "files": [
             "app/Helpers/EncryptionHelper.php",
-            "app/Helpers/LogHelper.php"
+            "app/Helpers/LogHelper.php",
+            "app/Helpers/NotificationHelper.php"
         ]
     },
     "autoload-dev": {

@@ -629,8 +629,8 @@ body {
 }
 
 .badge-success {
-    background: #d1fae5;
-    color: #059669;
+    background: #1b7748;
+    color: #ffffff;
 }
 
 .badge-info {
@@ -691,6 +691,7 @@ body {
 .footer-text {
     font-size: 0.875rem;
 }
+
 
 .footer-copyright {
     text-align: center;
@@ -1012,3 +1013,4 @@ body {
         margin-top: 12px;
     }
 }
+

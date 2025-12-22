@@ -14,8 +14,8 @@
     <form method="POST" action="{{ route('admin.courses.store') }}" enctype="multipart/form-data">
         @csrf
         
-        <div style="border: 1px solid #e5e5e6; border-radius: 8px; padding: 24px; margin-bottom: 24px;">
-            <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 20px;">Basic Information</h3>
+        <div class="course-form-section">
+            <h3 class="form-section-title">Basic Information</h3>
             
             <div class="form-group">
                 <label>Course Title*</label>
@@ -29,12 +29,12 @@
             
             <div class="form-group">
                 <label>Upload Thumbnail</label>
-                <input type="file" name="thumbnail" id="thumbnail" accept="image/*" style="display: none;" onchange="handleImageUpload(this, 'thumbnailPreview')">
-                <div style="border: 2px dashed #e5e5e6; border-radius: 8px; padding: 40px; text-align: center; background: #f9fafb; cursor: pointer;" onclick="document.getElementById('thumbnail').click()">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 48px; height: 48px; color: #9ca3af; margin: 0 auto 16px;">
+                <input type="file" name="thumbnail" id="thumbnail" accept="image/*" class="hidden-input" onchange="handleImageUpload(this, 'thumbnailPreview')">
+                <div class="thumbnail-upload-area" onclick="document.getElementById('thumbnail').click()">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="thumbnail-upload-icon">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
                     </svg>
-                    <button type="button" class="btn" style="background: #f59e0b; color: white;">Upload Thumbnail</button>
+                    <button type="button" class="btn btn-warning">Upload Thumbnail</button>
                 </div>
                 <div class="image-preview" id="thumbnailPreview"></div>
             </div>
@@ -47,7 +47,7 @@
                             const reader = new FileReader();
                             reader.onload = function(e) {
                                 const preview = document.getElementById(previewId);
-                                preview.innerHTML = `<img src="${e.target.result}" style="max-width: 200px; border-radius: 8px; margin-top: 12px; border: 1px solid #e5e5e6;">`;
+                                preview.innerHTML = `<img src="${e.target.result}" class="image-preview-img">`;
                             };
                             reader.readAsDataURL(file);
                         } else {
@@ -91,9 +91,9 @@
             </div>
         </div>
         
-        <div style="display: flex; gap: 12px;">
+        <div class="form-actions">
             <button type="submit" class="btn btn-primary">Create Course</button>
-            <a href="{{ route('admin.courses.index') }}" class="btn btn-secondary">Cancel</a>
+            <a href="{{ route('admin.courses.index') }}" class="btn btn-dark">Cancel</a>
         </div>
     </form>
 </div>

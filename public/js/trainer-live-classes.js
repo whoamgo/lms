@@ -98,3 +98,4 @@ function showAlert(type, message) {
         });
     }, 5000);
 }
+

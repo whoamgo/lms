@@ -1575,21 +1575,12 @@ body {
 /* ============================================
    21. RECORDED COURSES MODAL
    ============================================ */
-/*.modal-backdrop {
+.modal-backdrop {
     background-color: rgba(0, 0, 0, 0.5) !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
     filter: none !important;
-}*/
-
-.modal-backdrop {
-    --bs-backdrop-zindex:0 !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-    filter: none !important;
-    background-color: rgba(0, 0, 0, 0.5); /* optional */
 }
-
 
 .modal-backdrop.show {
     opacity: 0.5 !important;
@@ -1799,14 +1790,14 @@ body.modal-open .modal-backdrop {
     font-size: 0.875rem;
 }
 
-
 .footer-copyright {
     text-align: center;
     padding: 16px;
-    color: #ffffff;
-    background: black;
+    color: #fff;
     font-size: 0.875rem;
+    background: black;
 }
+
 
 /* ============================================
    24. NOTIFICATION ALERT
@@ -2129,3 +2120,4 @@ body.modal-open .modal-backdrop {
         padding: 30px 20px;
     }
 }
+

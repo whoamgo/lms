@@ -16,3 +16,4 @@ class CourseController extends Controller
         return view('trainer.courses', compact('courses'));
     }
 }
+

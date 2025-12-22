@@ -73,15 +73,20 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label>Class Time</label>
-                    <input type="time" name="class_time" value="{{ old('class_time', $batch->class_time) }}">
+                    <input type="time" name="class_time" value="{{ old('class_time', $batch->class_time ? \Carbon\Carbon::parse($batch->class_time)->format('H:i') : '') }}">
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label>Max Students</label>
-                    <input type="number" name="max_students" value="{{ old('max_students', $batch->max_students) }}" min="1">
+                    <label>Close Time</label>
+                    <input type="time" name="close_time" value="{{ old('close_time', $batch->close_time ? \Carbon\Carbon::parse($batch->close_time)->format('H:i') : '') }}">
                 </div>
             </div>
+        </div>
+        
+        <div class="form-group">
+            <label>Max Students Join*</label>
+            <input type="number" name="max_students" value="{{ old('max_students', $batch->max_students ?? 30) }}" min="1" required>
         </div>
         
         <div class="form-group">
@@ -101,3 +106,4 @@
     </form>
 </div>
 @endsection
+

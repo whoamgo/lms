@@ -16,6 +16,7 @@ class Batch extends Model
         'start_date',
         'end_date',
         'class_time',
+        'close_time',
         'max_students',
         'status',
         'thumbnail',
@@ -24,7 +25,6 @@ class Batch extends Model
     protected $casts = [
         'start_date' => 'date',
         'end_date' => 'date',
-        'class_time' => 'datetime',
     ];
 
     public function course()

@@ -267,10 +267,6 @@
             align-items: center;
             justify-content: center;
         }
-
-
-
-        
     </style>
 </head>
 <body>
@@ -296,7 +292,7 @@
             </div>
             
             <div class="cert-recipient-name">
-               Amit Kumar Giri
+                {{ ucwords(strtolower($certificate->student->name)) }}
             </div>
             
             <div class="cert-description">
@@ -327,3 +323,4 @@
     </div>
 </body>
 </html>
+

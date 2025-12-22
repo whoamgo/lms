@@ -54,18 +54,19 @@ class NotificationController extends Controller
                   ->orWhereNull('user_id');
         })->where('is_read', false)->count();
         
-        return response()->json(['count' => '500']);
+        return response()->json(['count' => $count]);
     }
 
     public function getRecent()
     {
+
         $notifications = AdminNotification::where(function($query) {
             $query->where('user_id', Auth::id())
                   ->orWhereNull('user_id');
         })->orderBy('created_at', 'desc')
           ->limit(5)
           ->get();
-        
+        //echo "<pre>"; print_r($notifications); die();
         return response()->json($notifications);
     }
 }

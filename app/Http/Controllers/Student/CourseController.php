@@ -9,12 +9,13 @@ use App\Models\Enrollment;
 use App\Models\Course;
 use App\Models\Video;
 use App\Models\Attendance;
+use App\Models\SavedVideo;
 use App\Helpers\EncryptionHelper;
 use App\Helpers\LogHelper;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 
@@ -24,7 +25,17 @@ class CourseController extends Controller
     {
         try {
             $student = Auth::user();
+            
+            // Validate user is authenticated and is a student
+            if (!$student || $student->role !== 'student') {
+                return redirect()->route('student.login')->with('error', 'Please login to access courses.');
+            }
+            
+            // Validate tab parameter
             $tab = $request->get('tab', 'all');
+            if (!in_array($tab, ['all', 'active', 'completed'])) {
+                $tab = 'all';
+            }
             
             $query = Enrollment::where('student_id', $student->id)
                 ->with('course');
@@ -49,7 +60,17 @@ class CourseController extends Controller
     {
         try {
             $student = Auth::user();
+            
+            // Validate user is authenticated and is a student
+            if (!$student || $student->role !== 'student') {
+                return redirect()->route('student.login')->with('error', 'Please login to access certificates.');
+            }
+            
+            // Validate tab parameter
             $tab = $request->get('tab', 'current');
+            if (!in_array($tab, ['current', 'past', 'upcoming'])) {
+                $tab = 'current';
+            }
             
             $query = \App\Models\Certificate::where('student_id', $student->id)
                 ->with('course');
@@ -87,18 +108,29 @@ class CourseController extends Controller
         try {
             $id = EncryptionHelper::decryptIdFromUrl($encryptedId);
         } catch (\Exception $e) {
+            LogHelper::exception($e, 'student', ['action' => 'download_certificate', 'error' => 'invalid_certificate_id']);
             return redirect()->back()->with('error', 'Invalid certificate ID.');
         }
         
         try {
             $student = Auth::user();
+            
+            // Validate user is authenticated and is a student
+            if (!$student || $student->role !== 'student') {
+                return redirect()->route('student.login')->with('error', 'Please login to download certificates.');
+            }
+            
+            // Ensure certificate belongs to the authenticated student
             $certificate = \App\Models\Certificate::where('student_id', $student->id)
                 ->with('course', 'student')
                 ->findOrFail($id);
             
             return $this->generateCertificatePDF($certificate);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            LogHelper::exception($e, 'student', ['action' => 'download_certificate', 'error' => 'certificate_not_found', 'certificate_id' => $id ?? null]);
+            return redirect()->back()->with('error', 'Certificate not found.');
         } catch (\Exception $e) {
-            LogHelper::exception($e, 'student', ['action' => 'certificate_download', 'certificate_id' => $id ?? null]);
+            LogHelper::exception($e, 'student', ['action' => 'download_certificate', 'certificate_id' => $id ?? null]);
             return redirect()->back()->with('error', 'An error occurred while generating the certificate.');
         }
     }
@@ -125,11 +157,29 @@ class CourseController extends Controller
         try {
             $student = Auth::user();
             
-            // Get filter parameters
+            // Validate user is authenticated and is a student
+            if (!$student || $student->role !== 'student') {
+                return redirect()->route('student.login')->with('error', 'Please login to view attendance.');
+            }
+            
+            // Validate and sanitize filter parameters
             $courseFilter = $request->get('course', 'all');
-            $year = $request->get('year', date('Y'));
-            $month = $request->get('month', date('m'));
+            $year = (int) $request->get('year', date('Y'));
+            $month = (int) $request->get('month', date('m'));
             $dateRange = $request->get('range', 'this_month');
+            
+            // Validate year and month
+            if ($year < 2000 || $year > 2100) {
+                $year = (int) date('Y');
+            }
+            if ($month < 1 || $month > 12) {
+                $month = (int) date('m');
+            }
+            
+            // Validate dateRange
+            if (!in_array($dateRange, ['this_month', 'last_month', 'custom'])) {
+                $dateRange = 'this_month';
+            }
             
             // Calculate date range based on selection
             $startDate = now();
@@ -294,7 +344,16 @@ class CourseController extends Controller
     {
         try {
             $student = Auth::user();
-            $search = $request->get('search', '');
+            
+            // Validate user is authenticated and is a student
+            if (!$student || $student->role !== 'student') {
+                return redirect()->route('student.login')->with('error', 'Please login to access recorded courses.');
+            }
+            
+            // Sanitize search input
+            $search = trim($request->get('search', ''));
+            $search = strip_tags($search);
+            $search = substr($search, 0, 255); // Limit length
             
             // Get enrolled courses with videos
             $enrollments = Enrollment::where('student_id', $student->id)
@@ -363,6 +422,16 @@ class CourseController extends Controller
         try {
             $student = Auth::user();
             
+            // Validate user is authenticated and is a student
+            if (!$student || $student->role !== 'student') {
+                return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
+            }
+            
+            // Validate courseId is numeric
+            if (!is_numeric($courseId)) {
+                return response()->json(['success' => false, 'message' => 'Invalid course ID'], 400);
+            }
+            
             // Verify student is enrolled
             $enrollment = Enrollment::where('student_id', $student->id)
                 ->where('course_id', $courseId)
@@ -398,8 +467,8 @@ class CourseController extends Controller
                 return [
                     'id' => $video->id,
                     'encrypted_id' => EncryptionHelper::encryptIdForUrl($video->id),
-                    'title' => $video->title,
-                    'description' => $video->description,
+                    'title' => htmlspecialchars($video->title, ENT_QUOTES, 'UTF-8'),
+                    'description' => htmlspecialchars($video->description ?? '', ENT_QUOTES, 'UTF-8'),
                     'duration' => $durationSeconds,
                     'duration_formatted' => $this->formatDuration($durationSeconds),
                     'order' => $video->order,
@@ -411,8 +480,8 @@ class CourseController extends Controller
                 'success' => true,
                 'course' => [
                     'id' => $course->id,
-                    'title' => $course->title,
-                    'description' => $course->description,
+                    'title' => htmlspecialchars($course->title, ENT_QUOTES, 'UTF-8'),
+                    'description' => htmlspecialchars($course->description ?? '', ENT_QUOTES, 'UTF-8'),
                     'total_videos' => $totalVideos,
                     'total_duration' => $totalHours . 'h ' . str_pad($totalMinutes, 2, '0', STR_PAD_LEFT) . 'm',
                     'completed_count' => $completedCount,
@@ -445,10 +514,16 @@ class CourseController extends Controller
     {
         try {
             $student = Auth::user();
+            
+            // Validate user is authenticated and is a student
+            if (!$student || $student->role !== 'student') {
+                return redirect()->route('student.login')->with('error', 'Please login to access support.');
+            }
+            
             return view('student.support', compact('student'));
         } catch (\Exception $e) {
-            \Log::error('Student Support Error: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'An error occurred while loading support.');
+            LogHelper::exception($e, 'student', ['action' => 'support']);
+            return redirect()->back()->with('error', 'An error occurred while loading support page.');
         }
     }
 
@@ -457,14 +532,21 @@ class CourseController extends Controller
         try {
             $id = EncryptionHelper::decryptIdFromUrl($encryptedId);
         } catch (\Exception $e) {
+            LogHelper::exception($e, 'student', ['action' => 'watch_video', 'error' => 'invalid_video_id']);
             return redirect()->route('student.enroll-courses')->with('error', 'Invalid video ID.');
         }
         
         try {
             $student = Auth::user();
             
+            // Validate user is authenticated and is a student
+            if (!$student || $student->role !== 'student') {
+                return redirect()->route('student.login')->with('error', 'Please login to access videos.');
+            }
+            
             // Get video and check if student is enrolled in the course
             $video = Video::with('course', 'batch', 'trainer')
+                ->where('status', 'active')
                 ->findOrFail($id);
             
             // Check if student is enrolled in this course
@@ -473,6 +555,7 @@ class CourseController extends Controller
                 ->first();
             
             if (!$enrollment) {
+                LogHelper::warning('Unauthorized video access attempt', ['student_id' => $student->id, 'video_id' => $id], 'student');
                 return redirect()->route('student.enroll-courses')->with('error', 'You are not enrolled in this course.');
             }
             
@@ -489,7 +572,7 @@ class CourseController extends Controller
             // Calculate progress (completed videos / total videos)
             $totalVideos = $courseVideos->count();
             
-            // Get completed videos count (you can implement video_progress table later)
+            // Get completed videos count
             $completedVideos = 0;
             try {
                 if (\Schema::hasTable('video_progress')) {
@@ -500,7 +583,7 @@ class CourseController extends Controller
                         ->count();
                 }
             } catch (\Exception $e) {
-                // Table doesn't exist, use default
+                LogHelper::exception($e, 'student', ['action' => 'watch_video', 'error' => 'video_progress_table']);
             }
             
             $progress = $totalVideos > 0 ? round(($completedVideos / $totalVideos) * 100) : 0;
@@ -524,10 +607,18 @@ class CourseController extends Controller
                 return $item->id === $video->id;
             });
             
-            return view('student.watch-video', compact('video', 'courseVideos', 'totalVideos', 'completedVideos', 'progress', 'isCompleted', 'currentIndex', 'enrollment'));
-        } catch (\Exception $e) {
-            Log::error('Error fetching video for student watch: ' . $e->getMessage());
+            // Check if video is saved by student
+            $isSaved = SavedVideo::where('student_id', $student->id)
+                ->where('video_id', $video->id)
+                ->exists();
+            
+            return view('student.watch-video', compact('video', 'courseVideos', 'totalVideos', 'completedVideos', 'progress', 'isCompleted', 'currentIndex', 'enrollment', 'isSaved'));
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            LogHelper::exception($e, 'student', ['action' => 'watch_video', 'error' => 'video_not_found']);
             return redirect()->route('student.enroll-courses')->with('error', 'Video not found.');
+        } catch (\Exception $e) {
+            LogHelper::exception($e, 'student', ['action' => 'watch_video']);
+            return redirect()->route('student.enroll-courses')->with('error', 'An error occurred while loading the video.');
         }
     }
 
@@ -536,11 +627,18 @@ class CourseController extends Controller
         try {
             $id = EncryptionHelper::decryptIdFromUrl($encryptedId);
         } catch (\Exception $e) {
+            LogHelper::exception($e, 'student', ['action' => 'mark_video_completed', 'error' => 'invalid_video_id']);
             return response()->json(['success' => false, 'message' => 'Invalid video ID'], 400);
         }
         
         try {
             $student = Auth::user();
+            
+            // Validate user is authenticated
+            if (!$student || $student->role !== 'student') {
+                return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
+            }
+            
             $video = Video::findOrFail($id);
             
             // Check enrollment
@@ -568,12 +666,63 @@ class CourseController extends Controller
                     );
                 }
             } catch (\Exception $e) {
-                // Table doesn't exist, that's okay
+                LogHelper::exception($e, 'student', ['action' => 'mark_video_completed', 'error' => 'video_progress_table']);
             }
             
             return response()->json(['success' => true]);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            LogHelper::exception($e, 'student', ['action' => 'mark_video_completed', 'error' => 'video_not_found']);
+            return response()->json(['success' => false, 'message' => 'Video not found'], 404);
         } catch (\Exception $e) {
-            Log::error('Error marking video as completed: ' . $e->getMessage());
+            LogHelper::exception($e, 'student', ['action' => 'mark_video_completed']);
+            return response()->json(['success' => false, 'message' => 'Error occurred'], 500);
+        }
+    }
+    
+    /**
+     * Save/Unsave video
+     */
+    public function toggleSaveVideo($encryptedId)
+    {
+        try {
+            $id = EncryptionHelper::decryptIdFromUrl($encryptedId);
+        } catch (\Exception $e) {
+            LogHelper::exception($e, 'student', ['action' => 'toggle_save_video', 'error' => 'invalid_video_id']);
+            return response()->json(['success' => false, 'message' => 'Invalid video ID'], 400);
+        }
+        
+        try {
+            $student = Auth::user();
+            
+            // Validate user is authenticated
+            if (!$student || $student->role !== 'student') {
+                return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
+            }
+            
+            $video = Video::findOrFail($id);
+            
+            // Check if already saved
+            $savedVideo = SavedVideo::where('student_id', $student->id)
+                ->where('video_id', $video->id)
+                ->first();
+            
+            if ($savedVideo) {
+                // Unsave
+                $savedVideo->delete();
+                return response()->json(['success' => true, 'saved' => false, 'message' => 'Video removed from saved list']);
+            } else {
+                // Save
+                SavedVideo::create([
+                    'student_id' => $student->id,
+                    'video_id' => $video->id,
+                ]);
+                return response()->json(['success' => true, 'saved' => true, 'message' => 'Video saved successfully']);
+            }
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            LogHelper::exception($e, 'student', ['action' => 'toggle_save_video', 'error' => 'video_not_found']);
+            return response()->json(['success' => false, 'message' => 'Video not found'], 404);
+        } catch (\Exception $e) {
+            LogHelper::exception($e, 'student', ['action' => 'toggle_save_video']);
             return response()->json(['success' => false, 'message' => 'Error occurred'], 500);
         }
     }

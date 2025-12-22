@@ -3,7 +3,7 @@
 @section('title', 'Upload New Video')
 
 @section('breadcrumbs')
-    <a href="{{ route('trainer.dashboard') }}">Home</a> / <a href="{{ route('trainer.videos') }}">Uploaded videos</a> / Upload New Video  
+    <a href="{{ route('trainer.dashboard') }}">Home</a> / <a href="{{ route('trainer.videos') }}">Uploaded videos</a> / Upload New Video
 @endsection
 
 @section('content')
@@ -296,3 +296,4 @@ const PLAYLIST_STORE_URL = '{{ route("trainer.videos.playlist.store") }}';
 <script src="{{ asset('js/trainer-upload-video.js') }}"></script>
 @endpush
 @endsection
+

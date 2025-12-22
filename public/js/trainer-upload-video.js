@@ -260,3 +260,4 @@ if (!document.getElementById('spinner-style')) {
     style.textContent = '@keyframes spin { to { transform: rotate(360deg); } }';
     document.head.appendChild(style);
 }
+

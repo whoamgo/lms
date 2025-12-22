@@ -30,7 +30,7 @@ $(document).ready(function() {
     $('#markAllReadBtn').on('click', function(e) {
         e.stopPropagation();
         $.ajax({
-            url: '{{ route("student.notifications.mark-all-read") }}',
+            url: NotificationsMarkAllRead,
             type: 'POST',
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -48,7 +48,7 @@ $(document).ready(function() {
     // Load notification count
     function loadNotificationCount() {
         $.ajax({
-            url: '{{ route("student.notifications.unread-count") }}',
+            url: NotificationsUnreadCount,
             type: 'GET',
             success: function(response) {
                 const count = response.count || 0;
@@ -69,7 +69,7 @@ $(document).ready(function() {
     // Load notifications for dropdown
     function loadNotifications() {
         $.ajax({
-            url: '{{ route("student.notifications.recent") }}',
+            url: NotificationsRecent,
             type: 'GET',
             success: function(notifications) {
                 let html = '';
@@ -113,7 +113,7 @@ $(document).ready(function() {
     // Load sidebar notifications
     function loadSidebarNotifications() {
         $.ajax({
-            url: '{{ route("student.notifications.recent") }}',
+            url: NotificationsRecent,
             type: 'GET',
             success: function(notifications) {
                 let html = '';
@@ -183,3 +183,4 @@ $(document).ready(function() {
         loadSidebarNotifications();
     }, 30000);
 });
+

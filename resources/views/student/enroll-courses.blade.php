@@ -7,6 +7,7 @@
 @endsection
 
 @section('content')
+
 <!-- Welcome Banner with Stats -->
 <div class="welcome-banner">
     <div class="welcome-banner-content">
@@ -118,7 +119,7 @@
     </div>
     @endif
 </div>
-</div>
+ 
 @endsection
 
 @push('scripts')
@@ -170,3 +171,4 @@ $(document).ready(function() {
 });
 </script>
 @endpush
+

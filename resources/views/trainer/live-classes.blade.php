@@ -177,3 +177,4 @@
 @push('scripts')
 <script src="{{ asset('js/trainer-live-classes.js') }}"></script>
 @endpush
+

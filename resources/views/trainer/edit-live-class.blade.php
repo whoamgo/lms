@@ -95,3 +95,4 @@ function handleImageUpload(input, previewId) {
 </script>
 @endpush
 @endsection
+

@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Batch;
 use App\Models\Course;
+use App\Helpers\LogHelper;
+use App\Helpers\NotificationHelper;
 
 class BatchController extends Controller
 {
@@ -57,6 +59,12 @@ class BatchController extends Controller
         $batch = Batch::create($validated);
 
         \App\Models\ActivityLog::log('created', $batch, 'Batch created: ' . $batch->name);
+        
+        // Send notification to admin
+        $course = Course::find($validated['course_id']);
+        if ($course) {
+            NotificationHelper::adminBatchCreated($batch->name, $course->title);
+        }
 
         return redirect()->route('trainer.active-batches')->with('success', 'Batch created successfully!');
     }
@@ -112,4 +120,58 @@ class BatchController extends Controller
 
         return redirect()->route('trainer.active-batches')->with('success', 'Batch updated successfully!');
     }
+    
+    /**
+     * Get batch details for modal
+     */
+    public function getBatchDetails($id)
+    {
+        try {
+            $trainer = Auth::user();
+            $batch = Batch::whereHas('course', function($q) use ($trainer) {
+                $q->whereHas('trainers', function($query) use ($trainer) {
+                    $query->where('users.id', $trainer->id);
+                });
+            })
+            ->with(['course', 'enrollments.student'])
+            ->findOrFail($id);
+            
+            return response()->json([
+                'success' => true,
+                'batch' => $batch,
+            ]);
+        } catch (\Exception $e) {
+            LogHelper::exception($e, 'trainer', ['action' => 'get_batch_details']);
+            return response()->json([
+                'success' => false,
+                'message' => 'Error loading batch details.'
+            ], 500);
+        }
+    }
+    
+    /**
+     * Delete batch
+     */
+    public function destroy($id)
+    {
+        try {
+            $trainer = Auth::user();
+            $batch = Batch::whereHas('course', function($q) use ($trainer) {
+                $q->whereHas('trainers', function($query) use ($trainer) {
+                    $query->where('users.id', $trainer->id);
+                });
+            })->findOrFail($id);
+            
+            $batchName = $batch->name;
+            $batch->delete();
+            
+            \App\Models\ActivityLog::log('deleted', $batch, "Batch deleted: {$batchName}");
+            
+            return redirect()->back()->with('success', 'Batch deleted successfully!');
+        } catch (\Exception $e) {
+            LogHelper::exception($e, 'trainer', ['action' => 'delete_batch']);
+            return redirect()->back()->with('error', 'Error deleting batch.');
+        }
+    }
 }
+

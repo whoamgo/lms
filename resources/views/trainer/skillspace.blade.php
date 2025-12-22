@@ -39,7 +39,7 @@
             </div>
         </a>
         
-        <a href="#" style="text-decoration: none;">
+        <a href="#" style="text-decoration: none; display: none;">
             <div style="background: #10b981; color: white; padding: 32px; border-radius: 12px; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); transition: transform 0.2s; cursor: pointer;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='translateY(0)'">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 48px; height: 48px; margin: 0 auto 16px; display: block;">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
@@ -48,7 +48,7 @@
             </div>
         </a>
         
-        <a href="{{ route('trainer.satsangs.index') }}" style="text-decoration: none;">
+        <a href="{{ route('trainer.satsangs.index') }}" style="text-decoration: none; display: none;">
             <div style="background: #f59e0b; color: white; padding: 32px; border-radius: 12px; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3); transition: transform 0.2s; cursor: pointer;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='translateY(0)'">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 48px; height: 48px; margin: 0 auto 16px; display: block;">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -59,3 +59,4 @@
     </div>
 </div>
 @endsection
+
