@@ -1,0 +1,173 @@
+
+
+
+ public function index(Request $request) {
+        if ($request->ajax()) {
+            $developers = $this->developer->where('usertype', '4');
+            
+            // Ordering developers by ID in descending order
+            $defaultColumn = $request->order['0']['column'] ?? '';
+            if ($defaultColumn == '0') {
+                $developers->orderBy('id', 'desc');
+            }
+            
+            return DataTables::of($developers)
+                ->addIndexColumn()
+                ->addColumn('created', fn($developers) => date('d M Y h:i A', strtotime($developers->created_at)))
+                ->addColumn('lastActivity', fn($developers) => !empty($developers->last_activity) ? date('d M Y h:i A', strtotime($developers->last_activity)) : "-")
+                ->addColumn('password', function ($developers) {
+                    return '**********';
+                }) 
+                ->addColumn('status', function ($developers) {
+                    return view('admin.developers.status_switch', compact('developers'))->render();
+                })
+                ->addColumn('actions', function ($developers) {
+                    return view('admin.developers.actions_buttons', compact('developers'))->render();
+                })
+                ->rawColumns(['actions', 'status', 'created', 'lastActivity','password'])
+                ->make(true);
+        }
+
+        
+        
+        if (!\App\Models\MenuPermission::checkRoutePermissions('admin.developers.index')) {
+            return redirect('admin/dashboard');
+        }
+        
+        $breadcrumb = ['title' => 'Users Manage', 'subtitle' => 'Developers'];
+        return view('admin.developers.index', compact('breadcrumb'));
+    }
+
+
+
+==== ajax ===
+ $(function () {
+
+    var table = $('#table').DataTable({
+        lengthChange: true,
+        autoWidth: false,
+        processing: true,
+        serverSide: true,
+        bDestroy: true,
+
+        pagingType: 'numbers_no_ellipses',
+
+        // ✅ Correct placement of placeholder code
+        initComplete: function () {
+            var searchInput = $('#table_filter input');
+            searchInput.attr('placeholder', 'Search by Email, Username');
+        },
+        /*responsive: true, 
+        scrollX: true,*/
+        lengthMenu: [[10, 25, 50, 100], [10, 25, 50, 100]],
+        ajax: {
+            url: IndexUrl,
+            data: function (d) {
+                d.role_type = $('select[name=role_type]').val();
+            }
+        },
+        columns: [{
+            data: 'DT_RowIndex',
+            orderable: false,
+            searchable: false
+        },
+        /*{
+                data: 'type',
+                name: 'developer.type',
+                orderable: false,
+                searchable: false
+            },*/
+        {
+            data: 'username',
+            name: 'username'
+        },
+        /*  {
+                data: 'image',
+                name: 'image',
+                orderable: false,
+                searchable: false
+          }, */
+        {
+            data: 'password',
+            name: 'password',
+            orderable: false,
+            searchable: false
+        },
+        {
+            data: 'email',
+            name: 'email'
+        },
+        {
+            data: 'status',
+            name: 'status',
+            orderable: false,
+            searchable: false
+        },
+        {
+            data: 'actions',
+            name: 'actions',
+            orderable: false,
+            searchable: false
+        },
+        ]
+    });
+
+    $("select[name='role_type']").on('change', function () {
+        table.draw();
+    });
+});
+
+$(document).on('change', '.status_change', function () {
+    const status = $(this).is(':checked') ? 'active' : 'inactive';
+    const id = $(this).data('id');
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    $.ajax({
+        type: 'post',
+        url: StatusChangeUrl,
+        data: { id: id, status: status },
+        dataType: 'json',
+        success: function (response) {
+            if (response.error == true) {
+                toastr.error(response.message);
+                setTimeout(function () { location.reload(); }, 2000);
+            } else {
+                toastr.success(response.message);
+            }
+        },
+        error: function (error) {
+            console.log(error);
+        }
+    });
+
+});
+
+
+
+$(document).on("click", ".editDeveloper", function () {
+    var developerId = $(this).data("id");
+
+    // AJAX request to fetch developer data (if needed)
+    $.ajax({
+        url: developerEditUrl + developerId + "/edit",
+        type: "GET",
+        success: function (data) {
+            $("#editDeveloperId").val(data.id);
+            $("#username").val(data.username);
+            $("#email").val(data.email);
+            $("#phone").val(data.phone);
+            // Update form action dynamically
+            var updateUrl = developerUpdateUrl.replace(':id', data.id);
+
+            $("#editDeveloperForm").attr("action", updateUrl);
+
+        }
+    });
+
+    // Show the modal
+    $("#editDeveloperModal").modal("show");
+});
