@@ -1,0 +1,103 @@
+Admin panel section
+===============
+1.In the Admin section, Department Management and Designation Management have been added. List pages have been created, and the Add/Edit forms open in a modal.
+2.Wherever Department and Designation were previously using text input fields, they have been replaced with select dropdown options.
+3.While adding an employee, Bank Information has also been included in the Add Employee form.
+4.When an employee is created, the basic information is saved in the users table, and the employee record stores the user_id to establish the relationship.
+When an employee is deleted, the related records in both tables are deleted.
+5.Payroll / Honorarium in not genrate pdf and payment slip.admin can also pdf and slip genrate and view.added a edit and delete buttons.
+6.in Reports Section admin side when genrate excel than not working excel not donwload.
+
+
+HR Panel Requirements
+=================
+
+
+
+1.Employee Master
+
+	A.The Employee Master module should be created in the HR panel, similar to the one created in the Admin panel.
+
+	B.HR should be able to create, view, edit, and manage employee details.
+
+2.Attendance Management
+
+	A.HR will create and manage employee attendance.
+
+	B.The attendance management process should be the same as the Admin panel.
+
+	C.Attendance records should be viewable, editable, and searchable.
+
+3.Leave Management
+
+	A. A Leave Management module should be created in the HR panel, similar to the Admin panel.
+	
+	B.When an employee applies for leave:
+
+	C.The leave request should be visible in both HR and Admin panels.
+
+	D.HR and Admin should be able to approve or reject the leave request.
+
+	E.Employees should be able to view the status of their leave requests(Employees panel).
+
+4.Contract Renewal Management
+
+	A.Contract details should be saved when an employee is created.
+
+	B.A list of all employee contracts should be available in the HR panel.
+
+	C.HR should be able to renew employee contracts.
+
+	D.Old contract history should also be maintained and viewable.
+
+	E.If an employee’s contract is closed or expired, the employee should not be able to log in to the system.
+
+5.Payroll Coordination
+
+	A.The HR panel should provide a Payroll View.
+
+	B.HR should be able to generate payslips and download them.
+
+	C.Payroll search functionality should be available:
+
+	D.Search by employee name
+
+	E.Same search and filter options as in the Admin panel
+
+6.Reports Master
+
+ 
+	A.Reports functionality and structure should be the same as the Admin panel.
+
+	B.HR should be able to generate and view various reports.
+
+
+
+Accounts-officer panel section
+==============================
+
+
+
+1.Monthly Payroll Processing create a mananager where we have select months and yeara after select role hr/employee/Accounts .. tohers , than select options come employee list accodind to role.also select Employee Type, than added Basic Pay / Honorarium,Allowances,PF,ESI,TDS,Deductions,Comp Off after auto calculte Net Pay accoding to above fillable.also added a filter options on list page.
+
+2.Payment Disbursement mangment create ,first select role than ,accoding select role come Employee Name in select options ,also searchable search options, also come bank account info accdoint to selected emply name ,Amount,Transaction ID,select months , and years, Disbursement Status than submit than save.also added filter options.
+3.TA/DA Ledger manager we have show all TA/DA wihc applyed here accounted approve and recject only when reject than added message go notificaons to users with are apllyed .show all info. first 
+4.Reports functionality and structure should be the same as the Admin panel.
+
+Employee Requirements
+==========================
+1.Leave Apply  employee apply for leave. 
+2.Attendance manage show all attented defult show currnet moths and yeas show ,also added filter yeaer and moths,
+3.TA/DA Claim employee claim and upload mutiple bill image same time select mutiple image when clanim 
+4.View Payslips employee can see  Salary Slip accodind to selected moths and years
+
+
+
+
+
+
+
+
+
+
+
